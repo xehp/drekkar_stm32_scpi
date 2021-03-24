@@ -1,32 +1,93 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
 *.o
+*.so
+*.d
 *.obj
 
-# Precompiled Headers
-*.gch
-*.pch
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
 
-# Fortran module files
-*.mod
-*.smod
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
 
-# Executables
-*.exe
-*.out
-*.app
+
+SRC/bin/Debug/port_mib
+.classpath
+#.project
+.settings
+
+# Libre office etc, lock files, backup files
+.~*#
+*~
+
+
+# Open Scad generated files
+*.stl
+*.gcode
+
+
+# Files from eclipse
+/.metadata/
+.metadata
+Debug
+
+# MBED generated files
+BUILD
+mbed-os
+*.swp
+.temp
+.mbed
+mbed_settings.pyc
+mbed_settings.py
+mbed-os.lib
+bin
+
+
+
+# Editors
+# VIM
+.*.swp
+.vscode/
+
+
+# own files we dont need to save
+eeprom0.bin
+eeprom80.bin
+binary.elf
+binary.hex
+softwaretest
+websuart_save.txt
+
+# Kicad
+*.sch-bak
+
+
