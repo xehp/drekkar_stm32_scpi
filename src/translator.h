@@ -10,6 +10,7 @@ History
 
 */
 
+#include "cfg.h"
 
 
 // This returns true if ee data is avaliable so that the
@@ -26,3 +27,7 @@ int32_t translateAdcToC(uint32_t adcSample);
 int translateInternalTempToC(uint32_t adcSample);
 #endif
 
+
+#ifdef CURRENT_ADC_CHANNEL
+int64_t translatorConvertFromAdcUnitsToMilliAmpsAc(int64_t currentInUnits);
+#endif

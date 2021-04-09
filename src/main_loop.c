@@ -27,9 +27,11 @@ Henrik
 #include "timerDev.h"
 #include "adcDev.h"
 #include "mathi.h"
-#include "externalSensor.h"
+#include "scpi.h"
 #include "cmd.h"
 #include "fan.h"
+#include "temp.h"
+#include "current.h"
 #include "log.h"
 #include "version.h"
 #include "main_loop.h"
@@ -209,8 +211,8 @@ int main_loop(void)
 	machineStateInit();
 
 	// Initialize Analog to Digital Converter
+	#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL) || (CURRENT_ADC_CHANNEL)
 	//mainLog(LOG_PREFIX "init adc" LOG_SUFIX);
-	#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL)
 	adc1Init();
 	#endif
 
@@ -218,14 +220,26 @@ int main_loop(void)
 
 	wdt_reset();
 
+	#if (defined SCPI_ON_USART2 || defined SCPI_ON_LPUART1 || defined SCPI_ON_SOFTUART1)
 	mainLog(LOG_PREFIX "init external sensor" LOG_SUFIX);
 	externalSensorInit();
+	#endif
 
+	#if (defined USE_LPTMR2_FOR_FAN2) || (defined FAN1_APIN) || (defined INTERLOCKING_LOOP_PIN)
+	// Initializing fan and interlocking supervision.
+	mainLog(LOG_PREFIX "Initializing fan" LOG_SUFIX);
+	fanInit();
+	#endif
 
-	// Initializing fan and temp supervision.
-	mainLog(LOG_PREFIX "Initializing fan and temp" LOG_SUFIX);
-	fanAndTempInit();
+	#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL) || (defined USE_LPTMR1_FOR_TEMP1)
+	// Initializing temp supervision.
+	mainLog(LOG_PREFIX "Initializing temp" LOG_SUFIX);
+	tempInit();
+	#endif
 
+	#ifdef CURRENT_ADC_CHANNEL
+	currentInit();
+	#endif
 
 	mainLog(LOG_PREFIX "Start command interpreter" LOG_SUFIX);
 	cmdInit();
@@ -233,7 +247,6 @@ int main_loop(void)
 	// Initialize the processes that tick once per second and also does the logging.
 	mainLog(LOG_PREFIX "secAndLogInit" LOG_SUFIX);
 	secAndLogInit();
-
 
 	wdt_reset();
 
@@ -291,6 +304,9 @@ int main_loop(void)
 		}
 		case 3:
 		{
+			#ifdef CURRENT_ADC_CHANNEL
+			currentMediumTick();
+			#endif
 			tickState++;
 			break;
 		}
@@ -323,7 +339,9 @@ int main_loop(void)
 		}
 		case 9:
 		{
+			#if (defined SCPI_ON_USART2 || defined SCPI_ON_LPUART1 || defined SCPI_ON_SOFTUART1)
 			externalSensorMediumTick();
+			#endif
 			tickState++;
 			break;
 		}

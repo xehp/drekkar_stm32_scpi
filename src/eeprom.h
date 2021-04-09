@@ -58,7 +58,7 @@ typedef struct
 	uint16_t spare_13;
 	uint16_t spare_14;
 	uint16_t spare_15;
-	uint32_t spare_16;
+	uint32_t microAmpsPerUnitAc;			   // MICRO_AMPS_PER_UNIT_AC_PAR
 	uint16_t spare_17;
 	uint8_t spare_18;
 	uint8_t spare_19;

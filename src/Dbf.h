@@ -54,7 +54,7 @@ enum
 };
 
 typedef struct {
-	char buffer[80];
+	char buffer[120];
 	unsigned int pos;
 	int encoderState;
 } DbfSerializer;

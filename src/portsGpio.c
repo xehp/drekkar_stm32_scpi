@@ -35,7 +35,7 @@ Henrik
 #ifdef PORTS_GPIO_H
 
 
-#if (defined PORTS_GPIO_APIN)
+#if (defined FAN1_APIN)
 
 #define GPIOA_LINE1 1
 
@@ -84,12 +84,12 @@ void __attribute__ ((interrupt, used)) EXTI15_10_IRQHandler(void)
 
 
 	/* Check if interrupt flag is set */
-	if (tmp & (1 << PORTS_GPIO_APIN))
+	if (tmp & (1 << FAN1_APIN))
 	{
-		// If PORTS_GPIO_APIN is the only interrupt for EXTI15_10_IRQHandler
+		// If FAN1_APIN is the only interrupt for EXTI15_10_IRQHandler
 		// then the flag does not need to be checked.
 		#if 0
-		int tmp = readInputPin(GPIOA, PORTS_GPIO_APIN);
+		int tmp = readInputPin(GPIOA, FAN1_APIN);
 		if (tmp!=prevInput)
 		{
 			counterA++;
@@ -118,7 +118,7 @@ void portsGpioExtiInitA()
 
 	// Configure fan input pin, typically PA_11
 	// Used for fan input, see fan1Init().
-	inputPinInit(GPIOA, PORTS_GPIO_APIN);
+	inputPinInit(GPIOA, FAN1_APIN);
 
 	#ifdef INVERTER_OVER_CURRENT_APIN
 	// Configure over current input pin, typically PA_6
@@ -126,22 +126,22 @@ void portsGpioExtiInitA()
 	#endif
 
 	// Fan pulses can use falling or rising edge but over current needs rising edge
-	EXTI->FTSR1 |= (1 << PORTS_GPIO_APIN);
+	EXTI->FTSR1 |= (1 << FAN1_APIN);
 	#ifdef INVERTER_OVER_CURRENT_APIN
 	EXTI->RTSR1 |= (1 << INVERTER_OVER_CURRENT_APIN);
 	#endif
 
 	// Do not know if this is also needed.
-	EXTI->EMR1 |= (1 << PORTS_GPIO_APIN);
+	EXTI->EMR1 |= (1 << FAN1_APIN);
 	#ifdef INVERTER_OVER_CURRENT_APIN
 	EXTI->EMR1 |= (1 << INVERTER_OVER_CURRENT_APIN);
 	#endif
 
-	// Tell system to enable PORTS_GPIO_APIN for EXTI_Line1
+	// Tell system to enable FAN1_APIN for EXTI_Line1
 	// Connect EXTI Line1 to PA1 pin
 	// Configure the corresponding mask bit in the EXTI_IMR register
 	// Interrupt mask line
-	EXTI->IMR1 |= (1 << PORTS_GPIO_APIN);
+	EXTI->IMR1 |= (1 << FAN1_APIN);
 	#ifdef INVERTER_OVER_CURRENT_APIN
 	EXTI->IMR1 |= (1 << INVERTER_OVER_CURRENT_APIN);
 	#endif

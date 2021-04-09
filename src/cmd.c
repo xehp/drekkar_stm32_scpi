@@ -22,13 +22,16 @@ Henrik Bjorkman
 #include "mathi.h"
 #include "eeprom.h"
 #include "fan.h"
+#include "temp.h"
+#include "current.h"
 #include "translator.h"
 #include "version.h"
 #include "log.h"
-#include "externalSensor.h"
+#include "scpi.h"
 #include "cmd.h"
 #include "debugLog.h"
 #include "serialDev.h"
+#include "translator.h"
 #include "mainSeconds.h"
 
 
@@ -93,10 +96,60 @@ static void forwardMessageToOthers(int receivedFromUsartDev, const DbfReceiver* 
 		switch(receivedFromUsartDev)
 		{
 			case DEV_USART1:
+				#ifdef FORWARD_USART1_TO_USART1
+				forwardMessage(DEV_USART1, dbfReceiver);
+				#endif
+				#ifdef FORWARD_USART1_TO_USART2
 				forwardMessage(DEV_USART2, dbfReceiver);
+				#endif
+				#ifdef FORWARD_USART1_TO_SOFTUART1
+				forwardMessage(DEV_SOFTUART1, dbfReceiver);
+				#endif
+				#ifdef FORWARD_USART1_TO_LPUART1
+				forwardMessage(DEV_LPUART1, dbfReceiver);
+				#endif
 				break;
 			case DEV_USART2:
+				#ifdef FORWARD_USART2_TO_USART1
 				forwardMessage(DEV_USART1, dbfReceiver);
+				#endif
+				#ifdef FORWARD_USART2_TO_USART2
+				forwardMessage(DEV_USART2, dbfReceiver);
+				#endif
+				#ifdef FORWARD_USART2_TO_SOFTUART1
+				forwardMessage(DEV_SOFTUART1, dbfReceiver);
+				#endif
+				#ifdef FORWARD_USART2_TO_LPUART1
+				forwardMessage(DEV_LPUART1, dbfReceiver);
+				#endif
+				break;
+			case DEV_SOFTUART1:
+				#ifdef FORWARD_SOFTUART1_TO_USART1
+				forwardMessage(DEV_USART1, dbfReceiver);
+				#endif
+				#ifdef FORWARD_SOFTUART1_TO_USART2
+				forwardMessage(DEV_USART2, dbfReceiver);
+				#endif
+				#ifdef FORWARD_SOFTUART1_TO_SOFTUART1
+				forwardMessage(DEV_SOFTUART1, dbfReceiver);
+				#endif
+				#ifdef FORWARD_SOFTUART1_TO_LPUART1
+				forwardMessage(DEV_LPUART1, dbfReceiver);
+				#endif
+				break;
+			case DEV_LPUART1:
+				#ifdef FORWARD_LPUART1_TO_USART1
+				forwardMessage(DEV_USART1, dbfReceiver);
+				#endif
+				#ifdef FORWARD_LPUART1_TO_USART2
+				forwardMessage(DEV_USART2, dbfReceiver);
+				#endif
+				#ifdef FORWARD_LPUART1_TO_SOFTUART1
+				forwardMessage(DEV_SOFTUART1, dbfReceiver);
+				#endif
+				#ifdef FORWARD_LPUART1_TO_LPUART1
+				forwardMessage(DEV_LPUART1, dbfReceiver);
+				#endif
 				break;
 			default:
 				break;
@@ -122,40 +175,54 @@ int64_t getParameterValue(PARAMETER_CODES parId, NOK_REASON_CODES *result)
 		{
 			return secAndLogGetSeconds();
 		}
+		#if (defined SCPI_ON_USART2 || defined SCPI_ON_LPUART1 || defined SCPI_ON_SOFTUART1)
 		case REPORTED_EXT_AC_VOLTAGE_MV:
 		{
 			return getMeasuredExternalAcVoltage_mV();
 		}
+		#endif
+		#if (defined TEMP1_ADC_CHANNEL) || (defined USE_LPTMR1_FOR_TEMP1)
 		case TEMP1_C:
 		{
-			return fanAndTempGetTemp1Measurement_C();
+			return tempGetTemp1Measurement_C();
 		}
-		#if (defined USE_LPTMR2_FOR_TEMP2) || (defined TEMP2_ADC_CHANNEL)
+		#endif
+		#ifdef TEMP2_ADC_CHANNEL
 		case TEMP2_C:
 		{
-			return fanAndTempGetTemp2Measurement_C();
+			return tempGetTemp2Measurement_C();
 		}
 		#endif
 		#ifdef USE_LPTMR2_FOR_FAN2
 		case FAN2_HZ:
 		{
-			return fanAndTempGetFan2Measurement_Hz();
+			return fanGetFan2Measurement_Hz();
 		}
 		#endif
 		#ifdef FAN1_APIN
 		case FAN1_HZ:
 		{
-			return fanAndTempGetFan1Measurement_Hz();
+			return fanGetFan1Measurement_Hz();
 		}
 		#endif
 		case REPORTED_ERROR:
 		{
 			return errorGetReportedError();
 		}
+		case MICRO_AMPS_PER_UNIT_AC:
+		{
+			return ee.microAmpsPerUnitAc;
+		}
 		case SYS_TIME_MS:
 		{
 			return systemGetSysTimeMs();
 		}
+		#ifdef CURRENT_ADC_CHANNEL
+		case MEASURED_LEAK_AC_CURRENT_MA:
+		{
+			return currentGetAcCurrent_mA();
+		}
+		#endif
 		default:
 			if (result!=NULL)
 			{
@@ -169,6 +236,9 @@ int64_t getParameterValue(PARAMETER_CODES parId, NOK_REASON_CODES *result)
 
 static void processReceivedMessage(int usartDev, const DbfReceiver* dbfReceiver)
 {
+	// Typically command interpreter would be called here.
+	// but in this case no commands are supported att all.
+	// Just forward the message.
 	forwardMessageToOthers(usartDev, dbfReceiver);
 }
 
@@ -212,11 +282,14 @@ void cmdCheckSerialPort(int usartDev, DbfReceiver* dbfReceiver)
 // It is used to check for incoming messages.
 void cmdFastTick(void)
 {
+	#ifdef COMMAND_ON_USART1
 	cmdCheckSerialPort(DEV_USART1 , &cmdLine1);
+	#endif
 
 	#ifdef COMMAND_ON_LPUART1
 	cmdCheckSerialPort(DEV_LPUART1 , &cmdLine0);
 	#endif
+
 	#ifdef COMMAND_ON_USART2
 	cmdCheckSerialPort(DEV_USART2 , &cmdLine2);
 	#endif
@@ -226,11 +299,14 @@ void cmdFastTick(void)
 // It is used for timeouts receiving messages.
 void cmdMediumTick(void)
 {
+	#ifdef COMMAND_ON_USART1
 	DbfReceiverTick(&cmdLine1, 1);
+	#endif
 
 	#ifdef COMMAND_ON_LPUART1
 	DbfReceiverTick(&cmdLine0, 1);
 	#endif
+
 	#ifdef COMMAND_ON_USART2
 	DbfReceiverTick(&cmdLine2, 1);
 	#endif
@@ -264,11 +340,15 @@ void cmdMediumTick(void)
 void cmdInit(void)
 {
 	logInt1(CMD_INIT);
+
+	#ifdef COMMAND_ON_USART1
 	DbfReceiverInit(&cmdLine1);
+	#endif
 
 	#ifdef COMMAND_ON_LPUART1
 	DbfReceiverInit(&cmdLine0);
 	#endif
+
 	#ifdef COMMAND_ON_USART2
 	DbfReceiverInit(&cmdLine2);
 	#endif

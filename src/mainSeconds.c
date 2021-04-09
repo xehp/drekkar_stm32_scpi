@@ -33,10 +33,12 @@ Henrik Bjorkman
 #include "Dbf.h"
 //#include "measuring.h"
 #include "fan.h"
+#include "temp.h"
+#include "current.h"
 #include "cmd.h"
 #include "messageNames.h"
 #include "log.h"
-#include "externalSensor.h"
+#include "scpi.h"
 #include "mainSeconds.h"
 
 
@@ -130,23 +132,31 @@ void secAndLogMediumTick(void)
 
 		case 1:
 		{
+			machineSupervise();
 			superviceState++;
 			break;
 		}
 		case 2:
 		{
-			machineSupervise();
-			fanAndTempMainSecondsTick();
+			#if (defined USE_LPTMR2_FOR_FAN2) || (defined FAN1_APIN) || (defined INTERLOCKING_LOOP_PIN)
+			fanMainSecondsTick();
+			#endif
 			superviceState++;
 			break;
 		}
 		case 3:
 		{
+			#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL) || (defined USE_LPTMR1_FOR_TEMP1)
+			tempMainSecondsTick();
+			#endif
 			superviceState++;
 			break;
 		}
 		case 4:
 		{
+			#ifdef CURRENT_ADC_CHANNEL
+			currentSecondsTick();
+			#endif
 			superviceState++;
 			break;
 		}

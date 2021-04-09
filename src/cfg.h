@@ -21,12 +21,6 @@ Adapted for using STM32.
 #ifndef CFG_HDR_H_
 #define CFG_HDR_H_
 
-// PWM break shall be used, not disabled, this option is just for debugging
-//#define DISABLE_PWM_BREAK_ON_PA6
-
-// This was a test only
-//#define MEASURE_COMP_AND_REF
-
 
 
 #define USART1_BAUDRATE 115200
@@ -36,56 +30,38 @@ Adapted for using STM32.
 // Support for Low Power Uart (LPUART)
 //#define LPUART1_BAUDRATE 9600
 
+// Usart1 is the one connected to our opto link
+// It is used for receiving commands.
+#define COMMAND_ON_USART1
 
 
 // Usart 2 can also be used for commands.
-// Currently if probaly only recives commands un usart2
-// it does not send replys to it.
+// Currently it probably only receives commands on usart2
+// it might not send replies to it (due to missing HW).
 #define COMMAND_ON_USART2
 
 
 // SCPI interface can use USART2 or SOFTUART1
 // If not using SCPI then use proprietary
 // which will expect commands with voltage.
+// Uncomment one (not 2 or 3) below to use SCPI.
 //#define SCPI_ON_USART2
 //#define SCPI_ON_LPUART1
 #define SCPI_ON_SOFTUART1
-//#define DBF_VOLTAGE_SENSOR
-//#define DIAC_VOLTAGE_SENSOR
 
 
-// lptmr1 will typically be used to measure temperature
-// pulses on port PB5 (AKA PB_5) but check in lptmr1Init() to be sure.
-//#define USE_LPTMR1_FOR_TEMP1
 
 
 // Port PB_1 (AKA PB1) is a timer input.
-// It can be used to measure pulses from a fan or a temp sensor.
-// NOTE Not both simultaneously.
-// Fan can be measured with FAN1_APIN.
-// If there is only one fan and only one temp sensor its better
-// to use this for fan since the FAN1_APIN uses interrupts.
 // LPTMR2 is also known as LPTIM2.
-//#define USE_LPTMR2_FOR_TEMP2
 //#define USE_LPTMR2_FOR_FAN2
-//#define USE_LPTMR2_FOR_VOLTAGE2
 
 
 // Enable if fan 1 shall be supervised on PA_11 (AKA PA11)
 // This will tell which pin on port A that the fan input is connected to.
-// This option one uses interrupts so only port A pins is currently supported.
-// If LPTMR2 was not needed for temperature preferably use that one instead.
-// Do not use 11 if it was used for relay 2 output.
-// It should be possible to use some other A pin such as PA3 or PA12 (have not tested that).
+// This option uses interrupts so only port A pins is currently supported.
+// TODO Use LPTMR1 instead see fan 2 how to do that.
 //#define FAN1_APIN 11
-
-
-// If voltage 2 sensor is not connected to LPTMR2 then it can be on any other Apin
-// Voltage 2 is the sensor that provides the external AC voltage. That is
-// voltage in the cable/coil resonance circuit.
-// such as PA3 (AKA PA_3)
-//#define VOLTAGE2_APIN 3
-
 
 
 
@@ -118,6 +94,8 @@ ADC1_IN16 PB1
 
 
 // If temperatures shall be measured also
+// channel 9 is on PA4
+// channel 10 is on PA5
 #define TEMP1_ADC_CHANNEL 9
 #define TEMP2_ADC_CHANNEL 10
 
@@ -125,20 +103,31 @@ ADC1_IN16 PB1
 //#define TEMP_INTERNAL_ADC_CHANNEL 18
 
 
-// Can not have 2 inputs for one sensor.
-#if (defined USE_LPTMR2_FOR_VOLTAGE2) && (defined VOLTAGE2_APIN)
-#error
-#endif
+// Measure current on PA1, channel ADC1_IN6
+//#define CURRENT_ADC_CHANNEL 6
 
 
-// Currently PORTS_GPIO support only one A pin.
-#if (defined FAN1_APIN) && (defined VOLTAGE2_APIN)
-#error
-#elif (defined FAN1_APIN)
-#define PORTS_GPIO_APIN FAN1_APIN
-#elif (defined VOLTAGE2_APIN)
-#define PORTS_GPIO_APIN VOLTAGE2_APIN
-#endif
+
+// Sometimes we run out of ports on the main box.
+// So we daisy chain the sensors. Here we configure how
+// messages are forwarded.
+#define FORWARD_USART1_TO_USART1
+#define FORWARD_USART1_TO_USART2
+//#define FORWARD_USART1_TO_SOFTUART1
+//#define FORWARD_USART1_TO_LPUART1
+#define FORWARD_USART2_TO_USART1
+#define FORWARD_USART2_TO_USART2
+//#define FORWARD_USART2_TO_SOFTUART1
+//#define FORWARD_USART2_TO_LPUART1
+//#define FORWARD_SOFTUART1_TO_USART1
+//#define FORWARD_SOFTUART1_TO_USART2
+//#define FORWARD_SOFTUART1_TO_SOFTUART1
+//#define FORWARD_SOFTUART1_TO_LPUART1
+//#define FORWARD_LPUART1_TO_USART1
+//#define FORWARD_LPUART1_TO_USART2
+//#define FORWARD_LPUART1_TO_SOFTUART1
+//#define FORWARD_LPUART1_TO_LPUART1
+
 
 
 // If interlocking uses PA3 then usart2 can not also be used.
@@ -153,32 +142,24 @@ ADC1_IN16 PB1
 #error
 #endif
 
-
+// If usart2 is used its baudrate must be set.
 #if (defined COMMAND_ON_USART2) || (defined SCPI_ON_USART2)
 #ifndef USART2_BAUDRATE
 #error
 #endif
 #endif
 
+// If soft uart is used its baudrate must be set.
+#ifdef SCPI_ON_SOFTUART1
+#ifndef SOFTUART1_BAUDRATE
+#error
+#endif
+#endif
+
+// If commands shall be sent/recieved on lpuart its baudrate must be set.
 #if (defined COMMAND_ON_LPUART1) && (!defined LPUART1_BAUDRATE)
 #error
 #endif
-
-// Can't read external voltage in more than one way.
-#if (defined USE_LPTMR2_FOR_VOLTAGE2) && (defined SCPI_ON_USART2)
-#error
-#endif
-
-#if (defined USE_LPTMR2_FOR_VOLTAGE2) && (defined VOLTAGE2_APIN)
-#error
-#endif
-
-#if (defined USE_LPTMR2_FOR_VOLTAGE2) || (defined VOLTAGE2_APIN)
-#ifndef DIAC_VOLTAGE_SENSOR
-#error
-#endif
-#endif
-
 
 
 #endif

@@ -23,6 +23,8 @@ References
 #include "adcDev.h"
 #include "serialDev.h"
 
+#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL) || (CURRENT_ADC_CHANNEL)
+
 
 #ifndef ASSERT
 #define ASSERT(c) {if (!c) {systemErrorHandler(SYSTEM_ASSERT_ERROR);}}
@@ -36,17 +38,26 @@ References
 
 
 
-// More important signals can be listed more than once here.
+// More important (urgent) signals can be listed more than once here.
 const uint32_t adcChannelSequence[] = {
-#ifdef TEMP1_ADC_CHANNEL
+		#ifdef CURRENT_ADC_CHANNEL
+		CURRENT_ADC_CHANNEL,
+		#endif
+		#ifdef TEMP1_ADC_CHANNEL
 		TEMP1_ADC_CHANNEL,
-#endif
-#ifdef TEMP2_ADC_CHANNEL
+		#endif
+		#ifdef CURRENT_ADC_CHANNEL
+		CURRENT_ADC_CHANNEL,
+		#endif
+		#ifdef TEMP2_ADC_CHANNEL
 		TEMP2_ADC_CHANNEL,
-#endif
-#ifdef TEMP_INTERNAL_ADC_CHANNEL
+		#endif
+		#ifdef CURRENT_ADC_CHANNEL
+		CURRENT_ADC_CHANNEL,
+		#endif
+		#ifdef TEMP_INTERNAL_ADC_CHANNEL
 		TEMP_INTERNAL_ADC_CHANNEL,
-#endif
+		#endif
 };
 
 
@@ -307,3 +318,5 @@ uint32_t adc1GetSample(uint32_t channel)
 	//ASSERT(channel < SIZEOF_ARRAY(adcSamples));
 	return adcSamples[channel];
 }
+
+#endif

@@ -18,9 +18,17 @@ History
 #include "translator.h"
 
 
+#ifdef CURRENT_ADC_CHANNEL
+int64_t translatorConvertFromAdcUnitsToMilliAmpsAc(int64_t currentInUnits)
+{
+	const int64_t uA = (int64_t)currentInUnits * (int64_t)ee.microAmpsPerUnitAc;
+	return DIV_ROUND(uA, 1000);
+}
+#endif
 
 
 
+#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL)
 
 
 
@@ -39,7 +47,6 @@ int32_t measuring_convertToHz(uint32_t halfPeriod)
 
 
 
-#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL)
 
 // The ADC sample represent a value between 0 and ADC_RANGE (0x10000).
 // Depending on voltage divider R1 and R2.

@@ -29,12 +29,16 @@ typedef enum
 	EEPROM_TRYING_BACKUP = 23,
 	EEPROM_BACKUP_LOADED_OK = 24,
 	EEPROM_FAILED = 25,
-	FAN_AND_TEMP_INIT = 38,
+	FAN_1_NOT_DETECTED = 32,
+	FAN_2_NOT_DETECTED = 33,
+	FAN_INIT = 38,
+	FAN_AND_TEMP_COUNT_FAN2 = 39,
 	SEC_AND_LOG_INIT = 80,
 	ERROR_REPORT = 180,
 	ERROR_ASSERT = 181,
 	EEPROM_SAVE_PENDING_FLAG_SET = 213,
 	EEPROM_PERFOMING_PENDING_SAVE = 214,
+	TEMP_INIT = 226,
 } AVR_CFG_LOG_MESSAGES;
 
 // Codes used in STATUS_MESSAGES messages.
@@ -43,6 +47,7 @@ typedef enum
 	UNKNOWN_STATUS_MSG = 0,
 	REBOOT_STATUS_MSG = 2,
 	VOLTAGE_STATUS_MSG = 3,
+	LEAK_CURRENT_STATUS_MSG = 5,
 	PARAMETER_STATUS_MSG = 10,
 	TEMP_STATUS_MSG = 11,
 } STATUS_MESSAGES;
@@ -93,13 +98,17 @@ typedef enum
 	REPORTED_EXT_AC_VOLTAGE_MV = 41,      // measured AC voltage
 	TEMP1_C = 47,
 	TEMP2_C = 48,
+	FAN1_HZ = 49, // Not used at the moment. Depends on macro FAN1_APIN.
+	FAN2_HZ = 50, // Not used at the moment. Depends on macro USE_LPTMR2_FOR_FAN2.
 	REPORTED_ERROR = 52,
+	MICRO_AMPS_PER_UNIT_AC = 61,        // ee.microAmpsPerUnit
 	SYS_TIME_MS = 74,
+	MEASURED_LEAK_AC_CURRENT_MA = 106,        // measured AC current
 	// Remember to update LOGGING_MAX_NOF_PARAMETERS if a parameter is added here.
 } PARAMETER_CODES;
 
 // Set this value to the highest value used in PARAMETER_CODES+1.
-#define LOGGING_MAX_NOF_PARAMETERS 86
+#define LOGGING_MAX_NOF_PARAMETERS 107
 
 
 // When A message NOK_REPLY_MSG is sent one of these codes shall be used to tell what when wrong.

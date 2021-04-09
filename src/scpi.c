@@ -3,14 +3,16 @@
 #include "systemInit.h"
 #include "log.h"
 #include "machineState.h"
-#include "externalSensor.h"
+#include "scpi.h"
 //#include "mainSeconds.h"
 
 /*
 The purpose of this is to process messages from an external voltage sensor.
 */
 
-#if (defined SCPI_ON_USART2) || (defined SCPI_ON_SOFTUART1)
+
+#if (defined SCPI_ON_USART2 || defined SCPI_ON_LPUART1 || defined SCPI_ON_SOFTUART1)
+
 
 // In this configuration a SCPI capable multimeter is expected, such as this one:
 // http://bkpmedia.s3.amazonaws.com/downloads/manuals/en-us/5492B_manual.pdf
@@ -670,32 +672,8 @@ int getMeasuredExtAcVoltageIsAvailable()
 	return (nOfvaluesAvailable>=3);
 }
 
-// Check that configuration make sense.
-#if (defined SCPI_ON_USART2)
-	#ifndef USART2_BAUDRATE
-	#error
-	#endif
-#elif (defined SCPI_ON_SOFTUART1)
-	#ifndef SOFTUART1_BAUDRATE
-	#error
-	#endif
-#elif (defined SCPI_ON_LPUART1)
-#ifndef LPUART1_BAUDRATE
-#error
-#endif
-#else
-#error
-#endif
 
 
-#elif (defined DIAC_VOLTAGE_SENSOR)
-
-// Not implemented yet
-#error
-
-#else
-
-#error
 
 #endif
 
