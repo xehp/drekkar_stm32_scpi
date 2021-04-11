@@ -18,6 +18,7 @@ Henrik Bjorkman
 #define CMD_H
 
 #include <inttypes.h>
+#include "messageNames.h"
 
 int64_t getParameterValue(PARAMETER_CODES parId, NOK_REASON_CODES *result);
 

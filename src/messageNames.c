@@ -1,5 +1,5 @@
 /*
-msg.c
+messageNames.c
 
 Copyright (C) 2019 Henrik Bjorkman www.eit.se/hb.
 All rights reserved etc etc...
@@ -171,6 +171,7 @@ const char *getLogMessageName(int logMessageType)
 	case ERROR_ASSERT: return "ERROR_ASSERT";
 	case EEPROM_SAVE_PENDING_FLAG_SET: return "EEPROM_SAVE_PENDING_FLAG_SET";
 	case EEPROM_PERFOMING_PENDING_SAVE: return "EEPROM_PERFOMING_PENDING_SAVE";
+	case EEPROM_DATA_UPGRADED: return "EEPROM_DATA_UPGRADED";
 	#endif
 	default: break;
 	}
@@ -267,3 +268,4 @@ const char* getReasonCodeName(NOK_REASON_CODES reason)
 	return NULL;
 }
 #endif
+

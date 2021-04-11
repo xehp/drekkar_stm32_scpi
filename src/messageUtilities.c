@@ -19,7 +19,6 @@ Henrik Bjorkman
 #include "messageNames.h"
 #include "log.h"
 #include "messageUtilities.h"
-//#include "flashMemory.h"
 #include "serialDev.h"
 
 
@@ -241,9 +240,6 @@ void messageLogBuffer(const char *prefix, const unsigned char *bufPtr, int bufLe
 }
 
 #endif
-
-
-
 
 
 #if (defined __linux__) || (defined __WIN32)

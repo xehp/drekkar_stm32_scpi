@@ -1,5 +1,5 @@
 /*
-replyMessage.h
+messageUtilities.h
 
 
 Copyright (C) 2019 Henrik Bjorkman www.eit.se/hb.
@@ -17,9 +17,7 @@ Henrik Bjorkman
 
 #include "messageNames.h"
 
-
 void messageInitAndAddCategoryAndSender(DbfSerializer *dbfSerializer, MESSAGE_CATEGORY category);
-
 
 void messageReplyOkInitAndAddHeader(COMMAND_CODES cmd, int64_t replyToId, int64_t replyToRef);
 
@@ -31,11 +29,10 @@ void messageReplyToSetCommand(int16_t parameterId, int64_t value, int64_t replyT
 
 void messageReplyToGetCommand(int32_t parameterId, int64_t value, int64_t replyToId, int64_t replyToRef);
 
-
 void messageLogBuffer(const char* prefix, const unsigned char *bufPtr, int bufLen);
 
-
 extern DbfSerializer messageDbfTmpBuffer;
+
 void messageSendDbf(DbfSerializer *bytePacket);
 
 void messageSendShortDbf(int32_t code);

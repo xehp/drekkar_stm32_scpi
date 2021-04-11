@@ -423,7 +423,7 @@ static void enterWaitFetchReply()
 }
 
 
-void externalSensorInit()
+void scpiInit()
 {
 	// usarts are initialized by main.
 
@@ -433,7 +433,7 @@ void externalSensorInit()
 }
 
 
-int scientificMessageReceived()
+static int scientificMessageReceived()
 {
 	if (!rcvMessageReceived) {return 0;}
 
@@ -494,7 +494,7 @@ int scientificMessageReceived()
 }
 
 
-void externalSensorMediumTick()
+void scpiMediumTick()
 {
 	checkUart();
 
@@ -654,7 +654,7 @@ void externalSensorMediumTick()
 
 // This is in case a voltage reading is received on the other usart.
 // That is an error if it happens in this configuration.
-CmdResult externalSensorProcessStatusMsg(DbfUnserializer *dbfPacket)
+CmdResult scpiProcessStatusMsg(DbfUnserializer *dbfPacket)
 {
 	errorReportError(portsErrorUnexpecetedMessage);
 	// Don't echo this, it might be sent frequently
@@ -662,12 +662,12 @@ CmdResult externalSensorProcessStatusMsg(DbfUnserializer *dbfPacket)
 }
 
 
-int32_t getMeasuredExternalAcVoltage_mV()
+int32_t scpiGetMeasuredExternalAcVoltage_mV()
 {
 	return voltage_mv;
 }
 
-int getMeasuredExtAcVoltageIsAvailable()
+int scpiGetMeasuredExtAcVoltageIsAvailable()
 {
 	return (nOfvaluesAvailable>=3);
 }

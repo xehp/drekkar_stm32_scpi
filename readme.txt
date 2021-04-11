@@ -1,17 +1,5 @@
-An SCPI adapter. This code is used for reading voltage and current from an SCPI compatible voltage meter. The hardware is assumed to be an STM32 custom made board.
 
-
-This is the SW for "...CableAgeing2/kicad/controlboard_nucleo_4_inv/output.pdf"
-when that board is used to drive BOTH a buck converter AND a H bridge (the inverter). 
-See .../hardware/hdriver500/hdriver500.pdf
-
-Or
-This is the SW for "...CableAgeing2/kicad/controlboard_nucleo_4_buck_full/output.pdf"
-when that board is used to drive the inverter H bridge. 
-
-
-The H bridge may be located in another "BOX" with the board running this program being
-located in the buck converter box. 
+This is the SW for "...CableAgeing2/kicad/rs-232_opto_adapter_voltage/
 
 
 A compiler will be needed. Its possible that all you need to do is to install gcc-arm-none-eabi like this:
@@ -62,4 +50,7 @@ sudo /home/henrik/git/stlink/build/Release/st-flash --format ihex write binary.h
 
 For more see comments in "src/main.c".
 
+
+See also github:
+https://github.com/xehp/drekkar_stm32_scpi
 

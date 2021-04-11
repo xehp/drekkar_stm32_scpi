@@ -29,7 +29,7 @@
 #define LOG_SUFIX "\n"
 
 /*
-DrekkarBinaryFormat (DBF)
+DebugableBinaryFormat (DBF) AKA DrekkarBinaryFormat
 
 The purpose is to encode messages containing numbers and strings into a compact binary format.
 Sort of like LEB128 but this encodes strings also and will tell if next value is string or int.
@@ -77,14 +77,14 @@ Sub codes:
 	Those zeroes do not need to be sent.
 
 01bbbbbb
-	Number sub code. This is for a positive number n.
+	Number sub code. This is for a positive number n. Range 0 <= n < 2^63.
 	the 6 least significant data bits of n are written to the bbbbbb bits.
 	If the number was larger than 63 some Extension codes will be needed.
 	The number can be an integer to be shown as decimal, hexadecimal or
 	part of a string. Depending on any preceding format codes.
 
 001bbbbb
-	Number sub code. This is for a negative number n.
+	Number sub code. This is for a negative number n. Range -2^63 <= n < 0.
 	Note that Unicode characters might also be encoded as negative numbers
 	since they are subtracted with 64 before being encoded. This so that the most
 	common 7 bit ascii characters will fit without using extension codes.
@@ -362,7 +362,7 @@ static void DbfSerializerWriteCode64(DbfSerializer *dbfSerializer, int64_t i)
 	}
 	else
 	{
-		DbfSerializerEncodeData64(dbfSerializer, DBF_NINT_CODEID, DBF_NINT_DATANBITS, -1-i);
+		DbfSerializerEncodeData64(dbfSerializer, DBF_NINT_CODEID, DBF_NINT_DATANBITS, -1LL - i);
 	}
 }
 
@@ -561,7 +561,10 @@ unsigned int DbfUnserializerFindBeginOfCode(const DbfUnserializer *dbfUnserializ
 	return idx;
 }
 
-// The return value will point on the beginning of next code if any,
+/**
+ * The return value will point on the beginning of next code if any.
+ * Caller need to check if that index is larger then message size.
+ */
 unsigned int DbfUnserializerFindNextCode(const DbfUnserializer *dbfUnserializer, unsigned int idx)
 {
 	for(;;)
@@ -652,7 +655,7 @@ static int64_t DbfUnserializerDecodeData64(const DbfUnserializer *dbfUnserialize
 	while (codeEndIndex>0)
 	{
 		codeEndIndex--;
-		unsigned char ch = dbfUnserializer->msgPtr[codeEndIndex];
+		const unsigned char ch = dbfUnserializer->msgPtr[codeEndIndex];
 
 		const /*DbfCodeTypesEnum*/ uint8_t ct = GET_CODE_TYPE(ch);
 
@@ -676,7 +679,7 @@ static int64_t DbfUnserializerDecodeData64(const DbfUnserializer *dbfUnserialize
 				return i;
 			default:
 				#if defined __linux__ || defined __WIN32
-				printf("Unknown code 0x%x\n", ch);
+				printf("Unknown code 0x%x\n", (int)ch);
 				#endif
 				return 0;
 		}
@@ -755,6 +758,10 @@ int32_t DbfUnserializerReadInt32(DbfUnserializer *dbfUnserializer)
 	DbfUnserializerReadSpecial(dbfUnserializer);
 
 	const unsigned int nextCodeIndex = DbfUnserializerFindNextCode(dbfUnserializer, dbfUnserializer->readPos);
+	if (nextCodeIndex > dbfUnserializer->msgSize)
+	{
+		return 0;
+	}
 	const int32_t i = DbfUnserializerDecodeData32(dbfUnserializer, nextCodeIndex);
 	dbfUnserializer->readPos = nextCodeIndex;
 	return i;
@@ -766,6 +773,10 @@ int64_t DbfUnserializerReadInt64(DbfUnserializer *dbfUnserializer)
 	DbfUnserializerReadSpecial(dbfUnserializer);
 
 	const unsigned int nextCodeIndex = DbfUnserializerFindNextCode(dbfUnserializer, dbfUnserializer->readPos);
+	if (nextCodeIndex > dbfUnserializer->msgSize)
+	{
+		return 0;
+	}
 	const int64_t i = DbfUnserializerDecodeData64(dbfUnserializer, nextCodeIndex);
 	dbfUnserializer->readPos = nextCodeIndex;
 	return i;
@@ -1205,5 +1216,4 @@ int DbfReceiverLogRawData(const DbfReceiver *dbfReceiver)
 	return 0;
 }
 #endif
-
 

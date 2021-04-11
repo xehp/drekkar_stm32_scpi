@@ -29,6 +29,7 @@ typedef enum
 	EEPROM_TRYING_BACKUP = 23,
 	EEPROM_BACKUP_LOADED_OK = 24,
 	EEPROM_FAILED = 25,
+	EEPROM_SAVE_RESULT = 26,
 	FAN_1_NOT_DETECTED = 32,
 	FAN_2_NOT_DETECTED = 33,
 	FAN_INIT = 38,
@@ -39,6 +40,7 @@ typedef enum
 	EEPROM_SAVE_PENDING_FLAG_SET = 213,
 	EEPROM_PERFOMING_PENDING_SAVE = 214,
 	TEMP_INIT = 226,
+	EEPROM_DATA_UPGRADED = 227,
 } AVR_CFG_LOG_MESSAGES;
 
 // Codes used in STATUS_MESSAGES messages.
@@ -59,7 +61,6 @@ typedef enum
 	ECHO_CMD = 20,
 	GET_CMD = 21,
 	SET_CMD = 22,
-	SEND_ALL_CONFIG_CMD = 23,
 	IGNORE_VOLTAGE_SENSOR_CMD = 24,
 	REBOOT_CMD = 25,
 	SAVE_CMD = 26,
@@ -82,6 +83,9 @@ typedef enum
 
 
 // Error codes
+// The highest error code shall be less then the lowest code in PORTS_STATUS_SUB_MESSAGES.
+// The lowest of PORTS_STATUS_SUB_MESSAGES is currently 64. So up to 63 is OK here.
+// If adding a code here add it in getPortsErrorName and get_state_name in protocol.js also.
 enum
 {
 	portsErrorOk=0,							// No error detected
@@ -89,13 +93,16 @@ enum
 	portsErrorAssert=23,
 } PORTS_ERROR_CODES;
 
-
+// All parameters who's name ends with a number must be listed here in sequence.
+// Is is for example assumed in other parts of SW that TARGET_CYCLES_x &
+// REACHED_CYCLES_x are in sequence. So, things need to stay that way.
+// Some extra numbers where reserved in case these "arrays" need to be larger.
 typedef enum
 {
 	UNKNOWN_PAR = 0,
 	DEVICE_ID = 3,                  // ee.deviceId
 	TARGET_TIME_S = 26,
-	REPORTED_EXT_AC_VOLTAGE_MV = 41,      // measured AC voltage
+	REPORTED_EXT_AC_VOLTAGE_MV = 41,      // measured AC voltage from SCPI
 	TEMP1_C = 47,
 	TEMP2_C = 48,
 	FAN1_HZ = 49, // Not used at the moment. Depends on macro FAN1_APIN.
@@ -103,7 +110,7 @@ typedef enum
 	REPORTED_ERROR = 52,
 	MICRO_AMPS_PER_UNIT_AC = 61,        // ee.microAmpsPerUnit
 	SYS_TIME_MS = 74,
-	MEASURED_LEAK_AC_CURRENT_MA = 106,        // measured AC current
+	MEASURED_LEAK_AC_CURRENT_MA = 106,
 	// Remember to update LOGGING_MAX_NOF_PARAMETERS if a parameter is added here.
 } PARAMETER_CODES;
 

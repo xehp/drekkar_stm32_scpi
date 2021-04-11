@@ -54,7 +54,6 @@ uint16_t sqrti(uint32_t a)
 
 #else
 // http://www.embedded.com/electronics-blogs/programmer-s-toolbox/4219659/Integer-Square-Roots
-// Henriks benchmark test 1: Lap time 23 ms
 uint16_t sqrti(uint32_t a)
 {
 	uint32_t rem=0;
@@ -133,6 +132,42 @@ uint32_t sqrti64_32(uint64_t a)
 }
 
 
+#ifdef AVR_TIMER1_TONE_GENERATOR
 
 
+static const char sin_table[] PROGMEM={  0,   3,   6,   9,  12,  16,  19,  22, 
+                                          25,  28,  31,  34,  37,  40,  43,  46, 
+                                          49,  51,  54,  57,  60,  63,  65,  68, 
+                                          71,  73,  76,  78,  81,  83,  85,  88, 
+                                          90,  92,  94,  96,  98, 100, 102, 104, 
+                                         106, 107, 109, 111, 112, 113, 115, 116, 
+                                         117, 118, 120, 121, 122, 122, 123, 124, 
+                                         125, 125, 126, 126, 126, 127, 127, 127, 
+                                         127};
+
+// a is the angle in steps of 2*pi/256, that is 256 is a full turn.
+// returns sin(a*(2*pi*/256))*127, that is 127 for 1.
+int8_t my_sin(uint8_t a)
+{
+  if (a<64)
+  {
+    return pgm_read_byte(sin_table+a);
+  }
+  else if (a<128)
+  {
+    return pgm_read_byte(sin_table+(128-a));
+  }
+  else if (a<192)
+  {
+    return -pgm_read_byte(sin_table+(a-128));
+  }
+  else
+  {
+    return -pgm_read_byte(sin_table+(256-a));
+  }
+}
+
+
+
+#endif
 

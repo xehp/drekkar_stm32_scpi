@@ -5,6 +5,9 @@ Copyright (C) 2021 Henrik Bjorkman www.eit.se/hb.
 All rights reserved etc etc...
 
 
+Our current sensor measure top current (during a cycle) not RMS or even mean value,
+so don't expect to much from it.
+
 
 History
 

@@ -23,7 +23,7 @@ typedef enum {
     cmdResetCommand = 2
 } machineRequestedStateEnum;
 
-extern int64_t cyclesToDo;
+extern int64_t cyclesToDo; // TODO remove this extern declaration, use get/set CyclesToDo instead.
 extern int64_t totalCyclesPerformed;
 extern uint32_t machineSessionNumber;
 
@@ -31,10 +31,6 @@ extern DbfSerializer statusDbfMessage;
 extern int32_t maxAllowedCurrent_mA;
 extern int32_t maxAllowedExternalVoltage_mV;
 
-
-//void machineRequestPause();
-//void machineRequestRun();
-//void machineRequestReset();
 
 void secAndLogInitStatusMessageAddHeader(DbfSerializer *statusDbfMessage, STATUS_MESSAGES msg);
 

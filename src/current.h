@@ -22,9 +22,6 @@ Henrik Bjorkman
 #include <inttypes.h>
 
 
-
-
-
 void currentInit();
 void currentMediumTick();
 void currentSecondsTick();

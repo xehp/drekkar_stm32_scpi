@@ -178,7 +178,7 @@ int64_t getParameterValue(PARAMETER_CODES parId, NOK_REASON_CODES *result)
 		#if (defined SCPI_ON_USART2 || defined SCPI_ON_LPUART1 || defined SCPI_ON_SOFTUART1)
 		case REPORTED_EXT_AC_VOLTAGE_MV:
 		{
-			return getMeasuredExternalAcVoltage_mV();
+			return scpiGetMeasuredExternalAcVoltage_mV();
 		}
 		#endif
 		#if (defined TEMP1_ADC_CHANNEL) || (defined USE_LPTMR1_FOR_TEMP1)

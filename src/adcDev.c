@@ -20,15 +20,14 @@ References
 #include "stm32l4xx_ll_adc.h"
 #include "systemInit.h"
 #include "timerDev.h"
-#include "adcDev.h"
 #include "serialDev.h"
+#include "machineState.h"
+#include "adcDev.h"
+
 
 #if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL) || (CURRENT_ADC_CHANNEL)
 
 
-#ifndef ASSERT
-#define ASSERT(c) {if (!c) {systemErrorHandler(SYSTEM_ASSERT_ERROR);}}
-#endif
 
 // TODO supposedly there is a better way: http://www.cplusplus.com/faq/sequences/arrays/sizeof-array/#cpp
 #ifndef SIZEOF_ARRAY
@@ -111,6 +110,8 @@ void __attribute__ ((interrupt, used)) ADC1_IRQHandler(void)
 
 void adc1Init()
 {
+	ASSERT(sizeof(adcChannelSequence) > 0)
+
 	// Enable the needed clocks
 	RCC->AHB2ENR |= RCC_AHB2ENR_ADCEN_Msk;
 	//RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN_Msk;
@@ -309,13 +310,13 @@ uint32_t adc1IsReady()
 
 int adc1GetNOfSamples(uint32_t channel)
 {
-	//ASSERT(channel < SIZEOF_ARRAY(adcCounter));
+	ASSERT(channel < SIZEOF_ARRAY(adcCounter));
 	return adcCounter[channel];
 }
 
 uint32_t adc1GetSample(uint32_t channel)
 {
-	//ASSERT(channel < SIZEOF_ARRAY(adcSamples));
+	ASSERT(channel < SIZEOF_ARRAY(adcSamples));
 	return adcSamples[channel];
 }
 

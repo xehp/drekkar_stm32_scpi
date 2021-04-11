@@ -3,7 +3,7 @@ supervice.c
 
 provide functions that happen once per second, such as logging.
 
-Copyright (C) 2019 Henrik Bjorkman www.eit.se/hb.
+Copyright (C) 2021 Henrik Bjorkman www.eit.se/hb.
 All rights reserved etc etc...
 
 History
@@ -185,7 +185,6 @@ void secAndLogMediumTick(void)
 			superviceState++;
 			break;
 		}
-
 		default:
 		{
 			superviceState=0;

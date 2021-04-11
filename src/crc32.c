@@ -36,7 +36,7 @@ History:
 
 
 #ifndef ASSERT
-#define ASSERT assert
+#define ASSERT(c) {if (!c) {systemErrorHandler(SYSTEM_APPLICATION_ASSERT_ERROR);}}
 #endif
 
 

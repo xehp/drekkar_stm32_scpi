@@ -19,7 +19,7 @@ It will use one IO pin to show status and error.
 #include "stm32l4xx_ll_adc.h"
 
 #ifndef __arm__
-#error
+#error This only works with arm CPUs.
 #endif
 
 
@@ -32,6 +32,7 @@ It will use one IO pin to show status and error.
 #define SysClockFrequencyHz 80000000U
 
 
+// More enums can be added here if needed.
 enum
 {                                        // Morse code
 	SYSTEM_ASSERT_ERROR = 3,             // M --
@@ -91,6 +92,7 @@ void systemSleep();
  * Device handlers or applications can call this if they encounter an
  * error after which system shall be halted. Typically SysLib will
  * go into an eternal loop flashing the green LED depending on error code.
+ * See enum SystemErrorCodes for error codes to use.
  */
 void systemErrorHandler(int errorCode);
 

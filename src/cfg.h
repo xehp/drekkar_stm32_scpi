@@ -129,6 +129,9 @@ ADC1_IN16 PB1
 //#define FORWARD_LPUART1_TO_LPUART1
 
 
+#ifdef FAN1_APIN
+#define PORTS_GPIO_APIN FAN1_APIN
+#endif
 
 // If interlocking uses PA3 then usart2 can not also be used.
 #ifdef USART2_BAUDRATE

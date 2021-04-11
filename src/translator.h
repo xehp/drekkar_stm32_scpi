@@ -3,7 +3,7 @@ translator.h
 
 Translate between internal units and SI units.
 
-Copyright (C) 2019 Henrik Bjorkman www.eit.se/hb.
+Copyright (C) 2021 Henrik Bjorkman www.eit.se/hb.
 
 History
 2019-03-16 Created by Henrik Bjorkman

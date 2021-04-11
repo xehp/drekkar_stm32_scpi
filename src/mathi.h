@@ -39,7 +39,7 @@ Henrik
 #define DIV_ROUND_DOWN(a,b) ((a)/(b)) // In C this should truncating towards zero (so not down if negative).
 
 #define ABS(a) (((a)<0)?-(a):(a))
-#define MY_ABS(d) (((d)>=0)?(d):-(d))
+#define MY_ABS(d) (((d)>=0)?(d):(-(d)))
 //#define MY_ABS(a) ((a)<0?-(a):(a))
 #define MIN(a,b) (a<b?a:b)
 #define MAX(a,b) (a>b?a:b)

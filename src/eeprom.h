@@ -1,9 +1,9 @@
 /*
-avr_eeprom.h
+eeprom.h
 
 Handle stored parameters
 
-Copyright (C) 2019 Henrik Bjorkman www.eit.se/hb.
+Copyright (C) 2021 Henrik Bjorkman www.eit.se/hb.
 All rights reserved etc etc...
 
 History
@@ -17,7 +17,6 @@ Henrik Bjorkman
 #ifndef EEPROM_H_
 #define EEPROM_H_
 
-// TODO rename this to flashData
 
 #include <stdint.h>
 
@@ -31,14 +30,48 @@ Henrik Bjorkman
 
 
 // A magic number so we can detect if expected format of stored eedata has been changed (don't use zero).
-#define EEDATA_MAGIC_NR 0x1144
+// Remember to increment this number if struct below is changed in a non backward compatible way.
+#define EEDATA_MAGIC_NR 0x1044
 
+// To simplify upgrade we support one legacy magic number.
+// Comment this macro out if legacy feature is not needed.
+#define EEDATA_LEGACY_MAGIC_NR 0x1144
 
 
 // Add scan start and scan end frequency
 // If adding members here add them also in PARAMETER_CODES in msg.h.
 // And perhaps web server also need it in DataTargetStruct?
 // For best efficiency pay attention to word alignment if adding or removing something here.
+typedef struct
+{
+	uint16_t magicNumber;
+	uint16_t spare_0;
+	uint32_t microAmpsPerUnitAc;			   // MICRO_AMPS_PER_UNIT_AC_PAR
+	uint64_t deviceId;
+	uint64_t spare_2;
+	uint64_t spare_3;
+	uint64_t spare_4;
+	uint64_t spare_5;
+	uint64_t spare_6;
+	uint64_t spare_7;
+	uint64_t spare_8;
+	uint64_t spare_9;
+	uint64_t spare_10;
+	uint64_t spare_11;
+	uint64_t spare_12;
+	uint64_t spare_13;
+	uint64_t spare_14;
+	int32_t saveCounter;
+	uint32_t checkSum;
+} EeDataStruct;
+
+
+// data size in bytes
+// In version 0x1144 this was: 27*4 or 13.5*8 -> 108 bytes
+// In next it will need to be 128 bytes, so 20 more.
+
+
+#ifdef EEDATA_LEGACY_MAGIC_NR
 typedef struct
 {
 	uint16_t magicNumber;
@@ -65,7 +98,9 @@ typedef struct
 	uint16_t spare_20;
 	uint16_t spare_21;
 	uint32_t checkSum;
-} EeDataStruct;
+} EeDataLegacyStruct;
+#endif
+
 
 
 extern EeDataStruct ee;
@@ -73,7 +108,6 @@ extern EeDataStruct ee;
 
 void eepromSave(void);
 void eepromLoad(void);
-void eepromSetDefault();
 void eepromSaveIfPending();
 void eepromSetSavePending();
 

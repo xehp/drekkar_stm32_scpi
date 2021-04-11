@@ -13,6 +13,7 @@ All rights reserved etc etc...
 #define FIFO_H
 
 #include "string.h"
+//#include "mathi.h"
 
 
 struct Fifo
@@ -48,8 +49,7 @@ static inline int fifoIsEmpty(volatile struct Fifo *fifoPtr)
 
 static inline char fifoTake(volatile struct Fifo *fifoPtr)
 {
-  const char tmp = fifoPtr->buffer[fifoPtr->tail];
-  ++fifoPtr->tail;
+  const char tmp = fifoPtr->buffer[fifoPtr->tail++];
   return tmp;
 }
 

@@ -22,12 +22,12 @@ Henrik Bjorkman
 
 // requires external HW to deliver this via serial port command 'v'
 //int32_t getMeasuredVoltage_rawUnits(void);
-int32_t getMeasuredExternalAcVoltage_mV();
-int getMeasuredExtAcVoltageIsAvailable();
+int32_t scpiGetMeasuredExternalAcVoltage_mV();
+int scpiGetMeasuredExtAcVoltageIsAvailable();
 
-CmdResult externalSensorProcessStatusMsg(DbfUnserializer *dbfPacket);
-void externalSensorMediumTick();
-void externalSensorInit();
+CmdResult scpiProcessStatusMsg(DbfUnserializer *dbfPacket);
+void scpiMediumTick();
+void scpiInit();
 
 
 #endif

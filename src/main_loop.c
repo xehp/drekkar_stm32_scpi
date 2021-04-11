@@ -1,7 +1,7 @@
 /*
 main_loop.c
 
-Copyright (C) 2019 Henrik Bjorkman www.eit.se/hb.
+Copyright (C) 2021 Henrik Bjorkman www.eit.se/hb.
 All rights reserved etc etc...
 
 
@@ -14,6 +14,10 @@ Henrik
 
 */
 
+//#include <stdio.h>
+//#include <unistd.h>
+//#include <stdint.h>
+#include <inttypes.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -45,54 +49,17 @@ Henrik
 
 
 
-// What shall the timeout be when waiting for current direction change
-//const int16_t waitingTimeout=(DIV_ROUND_UP(AVR_TMR0_TICKS_PER_SEC(),25));
-
-// Specify here a little delay before trying to detect current direction, This is given in the "unit" number of turns in the main loop. For how many turns per second we make see mainLoopCounter.
-// So 1 here gives about 10 us
-// 25 gives about 250 us
-
-
-// 200 gives 2 ms which in turn gives about 250 Hz
-const int16_t HalfCycleTimeout_mlt=10; // Unit is main loop turns (approx 10uS), So 100 here will give a frequenzy of about 500Hz, later we need to use something slightly less than 100 here since we wish to allow 300 - 3000 Hz.
-
-const int16_t HalfCycleMinTime_mlt=2;
 
 
 
 
+static int64_t mainTimeInTicks=0;
 
+static int32_t mainSecondsTimer=0;
 
+static int32_t mainLoopCounter=0; // This increments about once per 10 uS
 
-// Our current sensor measured top current not RMS or even mean value.
-// If we drive a resistive load the top current is aproximately the same
-// regardless of the actuall current so don't expect to much from it.
-
-//const int16_t deadTime_us=1;  // Time between turning one MOSFET off and turning the other on. Unit is micro seconds.
-
-
-int64_t mainTimeInTicks=0;
-
-int32_t mainSecondsTimer=0;
-
-// We do about 100000 turns per second on this. So for shorter time measurements use this instead of mainTimeInTicks
-
-int32_t mainLoopCounter=0; // This increments about once per 10 uS
-//char mainState=idleState;
-//int16_t mainStateEnteredTicks=0;   // Keeps the ticks that we had when currect state was entered, can be used to calculate how int32_t state has been (given in ticks).
-//int16_t mainLoopCounterInState=0; // Counts the number of turns since state was entered. See also mainLoopCounter.
-
-
-
-//char debugString[120]={0};
-//char *debugPtr=NULL;
-
-char tickState=0;
-
-
-// Variables and constants used for current measuring
-
-const int16_t TimeToDetectCurrent=2048;
+static char tickState=0;
 
 
 
@@ -134,6 +101,10 @@ int main_loop(void)
 	{
 		systemErrorHandler(SYSTEM_USART1_ERROR);
 	}
+	else
+	{
+		serialPrint(DEV_USART1, "USART1\n");
+	}
 
 	// Currently debug logging output.
 	// Later for connection with volt sensor.
@@ -144,27 +115,31 @@ int main_loop(void)
 	}
 	else
 	{
-		debug_print(LOG_PREFIX VERSION_STRING LOG_SUFIX);
+		serialPrint(DEV_USART2, "USART2\n");
 	}
 	#endif
 
-
-
-    #ifdef LPUART1_BAUDRATE
+        #ifdef LPUART1_BAUDRATE
+	// For connection with volt sensor.
 	if (serialInit(DEV_LPUART1, LPUART1_BAUDRATE)!=0)
 	{
 		systemErrorHandler(SYSTEM_LPUART_ERROR);
 	}
 	else
 	{
-		serialPrint(DEV_LPUART1, LOG_PREFIX VERSION_STRING LOG_SUFIX);
+		serialPrint(DEV_USART2, "LPUART1\n");
 	}
-    #endif
+        #endif
 
 	#ifdef SOFTUART1_BAUDRATE
+	// For connection with volt sensor.
 	if (serialInit(DEV_SOFTUART1, SOFTUART1_BAUDRATE)!=0)
 	{
 		systemErrorHandler(SYSTEM_SOFT_UART_ERROR);
+	}
+	else
+	{
+		serialPrint(DEV_SOFTUART1, "SOFTUART1\n");
 	}
 	#endif
 
@@ -191,7 +166,7 @@ int main_loop(void)
 #elif __arm__
 	mainLog(LOG_PREFIX "arm" LOG_SUFIX);
 #else
-#error
+#error Only Linux or embedded ARM is currently supported.
 #endif
 
 
@@ -221,8 +196,8 @@ int main_loop(void)
 	wdt_reset();
 
 	#if (defined SCPI_ON_USART2 || defined SCPI_ON_LPUART1 || defined SCPI_ON_SOFTUART1)
-	mainLog(LOG_PREFIX "init external sensor" LOG_SUFIX);
-	externalSensorInit();
+	mainLog(LOG_PREFIX "init SCPI" LOG_SUFIX);
+	scpiInit();
 	#endif
 
 	#if (defined USE_LPTMR2_FOR_FAN2) || (defined FAN1_APIN) || (defined INTERLOCKING_LOOP_PIN)
@@ -340,7 +315,7 @@ int main_loop(void)
 		case 9:
 		{
 			#if (defined SCPI_ON_USART2 || defined SCPI_ON_LPUART1 || defined SCPI_ON_SOFTUART1)
-			externalSensorMediumTick();
+			scpiMediumTick();
 			#endif
 			tickState++;
 			break;
