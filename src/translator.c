@@ -18,7 +18,13 @@ History
 #include "translator.h"
 
 
-#ifdef CURRENT_ADC_CHANNEL
+int8_t translatorConvertionAvailable()
+{
+	return (ee.microAmpsPerUnitDc !=0) && (ee.microVoltsPerUnitDc !=0);
+}
+
+
+#ifdef INV_OUTPUT_AC_CURRENT_CHANNEL
 int64_t translatorConvertFromAdcUnitsToMilliAmpsAc(int64_t currentInUnits)
 {
 	const int64_t uA = (int64_t)currentInUnits * (int64_t)ee.microAmpsPerUnitAc;
@@ -27,8 +33,60 @@ int64_t translatorConvertFromAdcUnitsToMilliAmpsAc(int64_t currentInUnits)
 #endif
 
 
+int64_t translatorConvertFromAdcUnitsToMilliAmpsDc(int64_t currentInUnits)
+{
+	const int64_t uA = (int64_t)currentInUnits * (int64_t)ee.microAmpsPerUnitDc;
+	return DIV_ROUND(uA, 1000);
+}
 
-#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL)
+/*
+static int32_t measuring_convertToMicroVolts(uint16_t voltageInUnits)
+{
+	const int32_t uV = (uint32_t)voltageInUnits * ee.microVoltsPerUnit;
+	return uV;
+}
+*/
+
+static uint32_t convertFromMicroAmpsToAdcUnits(int64_t uA)
+{
+	uint64_t a = DIV_ROUND((uA), ee.microAmpsPerUnitDc);
+	return MIN(a, uint32_tMaxValue);
+}
+
+
+
+uint32_t translatorConvertFromMilliAmpsToAdcUnitsDc(int32_t mA)
+{
+	return convertFromMicroAmpsToAdcUnits(((int64_t)mA)*1000LL);
+}
+
+
+int64_t translatorConvertFromAdcUnitsToMilliVoltsDc(int64_t voltageInUnits)
+{
+	if (voltageInUnits == NO_VOLT_VALUE)
+	{
+		return NO_VOLT_VALUE;
+	}
+	const int64_t probedMicrovoltsPerUnit = (int64_t)ee.microVoltsPerUnitDc;
+	const int64_t uV = voltageInUnits * probedMicrovoltsPerUnit;
+	return DIV_ROUND(uV, 1000L);
+}
+
+int32_t translatorConvertFromMilliVoltsToAdcUnitsDc(int32_t probeVolts)
+{
+	const int64_t probed_uV = ((int64_t)probeVolts) * 1000LL;
+	const int64_t probedMicrovoltsPerUnit = (int64_t)ee.microVoltsPerUnitDc;
+	const int64_t u = DIV_ROUND(probed_uV, probedMicrovoltsPerUnit);
+	return MIN(u, 0x7FFFFFFF);
+}
+
+int32_t translatorConvertFromExternalToMilliVoltsAc(int32_t externalVoltageInAdcUnits)
+{
+	// TODO Not same translation as internal measurements.
+	// For now assuming that external sensor give us voltage in mV or we use old way.
+	return externalVoltageInAdcUnits;
+	//return translatorConvertFromAdcUnitsToMilliVolts(externalVoltageInAdcUnits);
+}
 
 
 
@@ -37,6 +95,127 @@ static int32_t interpolate10(int low, int high, int offset)
 	return (low*(10-offset) + high*(offset))/10;
 }
 
+// Measured values
+//  10       54
+//  20       78
+//  30      105
+//  40      194
+//  50      260
+//  60      380
+//  70      450
+//  80      600
+//  90      770
+// 100     1000
+// 110     1360
+// 120     1700
+// Adjusted a little below
+#define FREQ_AT_10C 46
+#define FREQ_AT_20C 66
+#define FREQ_AT_30C 93
+#define FREQ_AT_40C 175
+#define FREQ_AT_50C 252
+#define FREQ_AT_60C 369
+#define FREQ_AT_70C 445
+#define FREQ_AT_80C 597
+#define FREQ_AT_90C 769
+#define FREQ_AT_100C 1000
+#define FREQ_AT_110C 1360
+#define FREQ_AT_120C 1700
+
+static int32_t linearInterpolationCToFreqUnadj(int32_t temp)
+{
+	const int i = temp/10;
+	const int o = temp%10;
+	switch(i)
+	{
+	case 1:
+		return interpolate10(FREQ_AT_10C, FREQ_AT_20C, o);
+	case 2:
+		return interpolate10(FREQ_AT_20C, FREQ_AT_30C, o);
+	case 3:
+		return interpolate10(FREQ_AT_30C, FREQ_AT_40C, o);
+	case 4:
+		return interpolate10(FREQ_AT_40C, FREQ_AT_50C, o);
+	case 5:
+		return interpolate10(FREQ_AT_50C, FREQ_AT_60C, o);
+	case 6:
+		return interpolate10(FREQ_AT_60C, FREQ_AT_70C, o);
+	case 7:
+		return interpolate10(FREQ_AT_70C, FREQ_AT_80C, o);
+	case 8:
+		return interpolate10(FREQ_AT_80C, FREQ_AT_90C, o);
+	case 9:
+		return interpolate10(FREQ_AT_90C, FREQ_AT_100C, o);
+	case 10:
+		return interpolate10(FREQ_AT_100C, FREQ_AT_110C, o);
+	case 11:
+		return interpolate10(FREQ_AT_110C, FREQ_AT_120C, o);
+	default:
+		if (temp<=10)
+		{
+			return interpolate10(FREQ_AT_10C, FREQ_AT_20C, temp-10);
+		}
+		else
+		{
+			return interpolate10(FREQ_AT_110C, FREQ_AT_120C, temp-110);
+		}
+	}
+}
+
+int32_t linearInterpolationCToFreq(int32_t temp)
+{
+	const int32_t f = linearInterpolationCToFreqUnadj(temp);
+
+
+	// Adjustment factor such that if we read 61 Hz and
+	// and our adjustment say 61 Hz is 20C then...
+	// If temp is at 100C then that adjustment shall dominate.
+	// TODO  Can probably remove this. Adjust linearInterpolationCToFreqUnadj instead.
+	// If removing this then remove ee.freqAt20C and ee.freqAt100C also.
+	const int32_t a = 100 - temp;
+	const int32_t b = temp - 20;
+	const int32_t c = (a * FREQ_AT_20C) + (b * FREQ_AT_100C);
+	const int32_t d = (a * ee.freqAt20C) + (b * ee.freqAt100C);
+
+
+	return (f*d) / c;
+}
+
+
+int32_t intervallHalvingFromFreqToC(int32_t freq)
+{
+	int32_t t=64;
+	int32_t s=64;
+
+	while(s>0)
+	{
+		const int f2=linearInterpolationCToFreq(t);
+
+		if (f2<freq)
+		{
+			t+=s;
+		}
+		else if (f2>freq)
+		{
+			t-=s;
+		}
+		else
+		{
+			break;
+		}
+		s=s/2;
+	}
+
+	// One extra step since otherwise we got very few even numbers and a lot of odd ones
+	// or was it the other way around?
+	const int32_t f3=linearInterpolationCToFreq(t);
+	if (f3<freq)
+	{
+		t++;
+	}
+
+	return t;
+}
 
 
 // TODO Duplicate code, see also macro TRANSLATE_HALF_PERIOD_TO_FREQUENCY.
@@ -47,6 +226,7 @@ int32_t measuring_convertToHz(uint32_t halfPeriod)
 
 
 
+#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL)
 
 // The ADC sample represent a value between 0 and ADC_RANGE (0x10000).
 // Depending on voltage divider R1 and R2.

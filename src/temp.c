@@ -59,12 +59,10 @@ static int16_t temp1Hz = 0;
 #endif
 static int temperature1State = 0;
 static int16_t prevTemp1Count = 0;
-#if (defined TEMP1_ADC_CHANNEL)
 static int32_t temp1C = 0;
 #endif
-#endif
 
-#ifdef TEMP2_ADC_CHANNEL
+#if defined TEMP2_ADC_CHANNEL || defined USE_LPTMR1_FOR_TEMP1
 static int temperature2State = 0;
 static int16_t prevTemp2Count = 0;
 static int32_t temp2C = 0;
@@ -159,81 +157,6 @@ static void temp1Init()
 }
 
 
-
-
-
-
-#ifdef USE_LPTMR1_FOR_TEMP1
-static inline void temp1MainSecondsTick()
-{
-	int16_t tmp = lptmr1GetCount();
-	switch (temperature1State)
-	{
-	default: 
-	case INITIAL_STATE:
-	  temp1Hz = 0;
-	  temperature1State = NOT_OK_STATE;
-	  break;
-	case NOT_OK_STATE:
-	{
-	  temp1Hz = tmp - prevTemp1Count;
-	  if ((temp1Hz > ee.tempMinFreq) && (temp1Hz < ee.tempMaxFreq))
-	  {
-		temperature1State = OK_STATE;
-	  }
-	  break;
-	}
-	case OK_STATE:
-	{
-	  temp1Hz = tmp - prevTemp1Count;
-	  if (temp1Hz < ee.tempMinFreq)
-	  {
-		logInt2(TEMP_SENSOR_FAIL, 1);
-		temperature1State = NOT_OK_STATE;
-	  }
-	  else if (temp1Hz > ee.tempMaxFreq)
-	  {
-		logInt2(TEMP_SENSOR_OVERHEAT, 1);
-		temperature1State = NOT_OK_STATE;
-	  }
-	  break;
-	}
-	}
-	prevTemp1Count = tmp;
-}
-#endif
-
-#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL)
-static inline void tempSendMainSecondsTick()
-{
-	const int n1 = adc1GetNOfSamples(TEMP1_ADC_CHANNEL);
-	const int n2 = adc1GetNOfSamples(TEMP2_ADC_CHANNEL);
-
-	if ((n1 != prevTemp1Count) && (n2 != prevTemp2Count)) {
-		uint32_t v1 = adc1GetSample(TEMP1_ADC_CHANNEL);
-		uint32_t v2 = adc1GetSample(TEMP2_ADC_CHANNEL);
-		temp1C = translateAdcToC(v1);
-		temp2C = translateAdcToC(v2);
-		sendTempMessage(temp1C, temp2C);
-		prevTemp1Count = n1;
-		prevTemp2Count = n2;
-		temperature1State = OK_STATE;
-		temperature2State = OK_STATE;
-	}
-	else
-	{
-		temperature1State = NOT_OK_STATE;
-		temperature2State = NOT_OK_STATE;
-	}
-}
-#else
-#error
-#endif
-
-
-
-
-
 int tempGetTemp1Measurement_C()
 {
 	return temp1C;
@@ -278,17 +201,72 @@ void tempInit()
 }
 
 
+#ifdef USE_LPTMR1_FOR_TEMP1
+void tempMainSecondsTick()
+{
+	int16_t tmp = lptmr1GetCount();
+	switch (temperature1State)
+	{
+	default: 
+	case INITIAL_STATE:
+	  temp1Hz = 0;
+	  temperature1State = NOT_OK_STATE;
+	  break;
+	case NOT_OK_STATE:
+	{
+	  temp1Hz = tmp - prevTemp1Count;
+	  if ((temp1Hz > tempMinFreq) && (temp1Hz < ee.tempMaxFreq))
+	  {
+		temperature1State = OK_STATE;
+	  }
+	  break;
+	}
+	case OK_STATE:
+	{
+	  temp1Hz = tmp - prevTemp1Count;
+	  if (temp1Hz < tempMinFreq)
+	  {
+		logInt2(TEMP_SENSOR_FAIL, 1);
+		temperature1State = NOT_OK_STATE;
+	  }
+	  else if (temp1Hz > ee.tempMaxFreq)
+	  {
+		logInt2(TEMP_SENSOR_OVERHEAT, 1);
+		temperature1State = NOT_OK_STATE;
+	  }
+	  break;
+	}
+	}
+	prevTemp1Count = tmp;
+}
+#elif (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL)
 
 void tempMainSecondsTick()
 {
-	#ifdef USE_LPTMR1_FOR_TEMP1
-	temp1MainSecondsTick();
-	#endif
+	const int n1 = adc1GetNOfSamples(TEMP1_ADC_CHANNEL);
+	const int n2 = adc1GetNOfSamples(TEMP2_ADC_CHANNEL);
 
-	#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL) || (defined USE_LPTMR1_FOR_TEMP1)
-	tempSendMainSecondsTick();
-	#endif
+	if ((n1 != prevTemp1Count) && (n2 != prevTemp2Count)) {
+		uint32_t v1 = adc1GetSample(TEMP1_ADC_CHANNEL);
+		uint32_t v2 = adc1GetSample(TEMP2_ADC_CHANNEL);
+		temp1C = translateAdcToC(v1);
+		temp2C = translateAdcToC(v2);
+		sendTempMessage(temp1C, temp2C);
+		prevTemp1Count = n1;
+		prevTemp2Count = n2;
+		temperature1State = OK_STATE;
+		temperature2State = OK_STATE;
+	}
+	else
+	{
+		temperature1State = NOT_OK_STATE;
+		temperature2State = NOT_OK_STATE;
+	}
 }
+#else
+#error
+#endif
+
 
 
 /**
