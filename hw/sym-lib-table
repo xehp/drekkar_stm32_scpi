@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name opto_board-rescue)(type Legacy)(uri ${KIPRJMOD}/../eit_kicad_libraries/eit_symbol_library/eit_proprietary.lib)(options "")(descr ""))
+  (lib (name eit_proprietary)(type Legacy)(uri ${KIPRJMOD}/../eit_kicad_libraries/eit_symbol_library/eit_proprietary.lib)(options "")(descr ""))
+  (lib (name board-rescue)(type Legacy)(uri /home/henrik/git/CableAgeing2/kicad/controlboard_5/board-rescue.lib)(options "")(descr ""))
+)

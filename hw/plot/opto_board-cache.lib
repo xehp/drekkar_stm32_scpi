@@ -1,0 +1,359 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# eit_proprietary_DB9_Male_MountingHoles-Connector
+#
+DEF eit_proprietary_DB9_Male_MountingHoles-Connector J 0 40 Y N 1 F N
+F0 "J" 0 650 50 H V C CNN
+F1 "eit_proprietary_DB9_Male_MountingHoles-Connector" 0 575 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ DSUB*Male*
+$ENDFPLIST
+DRAW
+C -70 -400 30 0 1 0 F
+C -70 -200 30 0 1 0 F
+C -70 0 30 0 1 0 F
+C -70 200 30 0 1 0 F
+C -70 400 30 0 1 0 F
+C 50 -300 30 0 1 0 F
+C 50 -100 30 0 1 0 F
+C 50 100 30 0 1 0 F
+C 50 300 30 0 1 0 F
+P 2 0 1 0 -150 -400 -100 -400 N
+P 2 0 1 0 -150 -300 20 -300 N
+P 2 0 1 0 -150 -200 -100 -200 N
+P 2 0 1 0 -150 -100 20 -100 N
+P 2 0 1 0 -150 0 -100 0 N
+P 2 0 1 0 -150 100 20 100 N
+P 2 0 1 0 -150 200 -100 200 N
+P 2 0 1 0 -150 300 20 300 N
+P 2 0 1 0 -150 400 -100 400 N
+P 5 0 1 10 -150 -525 -150 525 150 375 150 -375 -150 -525 f
+X PAD 0 0 -600 150 U 50 50 1 1 P
+X 1 1 -300 -400 150 R 50 50 1 1 P
+X 2 2 -300 -200 150 R 50 50 1 1 P
+X 3 3 -300 0 150 R 50 50 1 1 P
+X 4 4 -300 200 150 R 50 50 1 1 P
+X 5 5 -300 400 150 R 50 50 1 1 P
+X 6 6 -300 -300 150 R 50 50 1 1 P
+X 7 7 -300 -100 150 R 50 50 1 1 P
+X 8 8 -300 100 150 R 50 50 1 1 P
+X 9 9 -300 300 150 R 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# eit_proprietary_MAX232N-dk_Interface-Drivers-Receivers-Transceivers
+#
+DEF eit_proprietary_MAX232N-dk_Interface-Drivers-Receivers-Transceivers U 0 40 Y Y 1 F N
+F0 "U" -350 450 60 H V C CNN
+F1 "eit_proprietary_MAX232N-dk_Interface-Drivers-Receivers-Transceivers" 0 -500 60 V V L CNN
+F2 "digikey-footprints:DIP-16_W7.62mm" 200 200 60 H I L CNN
+F3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fmax232" 200 300 60 H I L CNN
+F4 "296-1402-5-ND" 200 400 60 H I L CNN "Digi-Key_PN"
+F5 "MAX232N" 200 500 60 H I L CNN "MPN"
+F6 "Integrated Circuits (ICs)" 200 600 60 H I L CNN "Category"
+F7 "Interface - Drivers, Receivers, Transceivers" 200 700 60 H I L CNN "Family"
+F8 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fmax232" 200 800 60 H I L CNN "DK_Datasheet_Link"
+F9 "/product-detail/en/texas-instruments/MAX232N/296-1402-5-ND/277048" 200 900 60 H I L CNN "DK_Detail_Page"
+F10 "IC DUAL EIA-232 DRVR/RCVR 16-DIP" 200 1000 60 H I L CNN "Description"
+F11 "Texas Instruments" 200 1100 60 H I L CNN "Manufacturer"
+F12 "Active" 200 1200 60 H I L CNN "Status"
+DRAW
+S -400 400 400 -600 0 1 0 f
+X C1+ 1 -500 300 100 R 50 50 1 1 P
+X T2IN 10 -500 -300 100 R 50 50 1 1 I
+X T1IN 11 -500 -400 100 R 50 50 1 1 I
+X R1OUT 12 500 -300 100 L 50 50 1 1 O
+X R1IN 13 -500 -200 100 R 50 50 1 1 I
+X T1OUT 14 500 -100 100 L 50 50 1 1 O
+X GND 15 -100 -700 100 U 50 50 1 1 W
+X VCC 16 -100 500 100 D 50 50 1 1 W
+X VS+ 2 500 200 100 L 50 50 1 1 O
+X C1- 3 -500 200 100 R 50 50 1 1 P
+X C2+ 4 -500 100 100 R 50 50 1 1 P
+X C2- 5 -500 0 100 R 50 50 1 1 P
+X VS- 6 500 100 100 L 50 50 1 1 O
+X T2OUT 7 500 0 100 L 50 50 1 1 O
+X R2IN 8 -500 -100 100 R 50 50 1 1 I
+X R2OUT 9 500 -200 100 L 50 50 1 1 O
+ENDDRAW
+ENDDEF
+#
+# eit_proprietary_opto_receiver_broadcom
+#
+DEF eit_proprietary_opto_receiver_broadcom RX 0 40 Y Y 1 F N
+F0 "RX" 0 0 50 H V C CNN
+F1 "eit_proprietary_opto_receiver_broadcom" 0 -550 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+S -300 -50 300 -450 0 1 0 N
+X VCC 1 -400 -150 100 R 50 50 1 1 W
+X GND 2 -400 -250 100 R 50 50 1 1 W
+X signal 3 -400 -350 100 R 50 50 1 1 O
+X NC 4 400 -150 100 L 50 50 1 1 N
+X NC 5 400 -350 100 L 50 50 1 1 N
+ENDDRAW
+ENDDEF
+#
+# eit_proprietary_opto_transmitter_broadcom
+#
+DEF eit_proprietary_opto_transmitter_broadcom TX 0 40 Y Y 1 F N
+F0 "TX" 0 0 50 H V C CNN
+F1 "eit_proprietary_opto_transmitter_broadcom" 0 -550 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+S -300 -50 300 -450 0 1 0 N
+P 2 0 1 0 -100 -300 100 -300 N
+P 2 0 1 0 0 -300 0 -400 N
+P 6 0 1 0 0 -100 0 -200 -100 -200 0 -300 100 -200 0 -200 N
+X Anode 1 -400 -150 100 R 50 50 1 1 I
+X Katode 2 -400 -350 100 R 50 50 1 1 I
+X NC 3 400 -150 100 L 50 50 1 1 N
+X NC 4 400 -350 100 L 50 50 1 1 N
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_+3.3V-power-board-rescue
+#
+DEF opto_board-rescue_+3.3V-power-board-rescue #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "opto_board-rescue_+3.3V-power-board-rescue" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +3V3 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_+5V-power-board-rescue
+#
+DEF opto_board-rescue_+5V-power-board-rescue #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "opto_board-rescue_+5V-power-board-rescue" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +5V 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_C-Device
+#
+DEF opto_board-rescue_C-Device C 0 10 N Y 1 F N
+F0 "C" 25 100 50 H V L CNN
+F1 "opto_board-rescue_C-Device" 25 -100 50 H V L CNN
+F2 "" 38 -150 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ C_*
+$ENDFPLIST
+DRAW
+P 2 0 1 20 -80 -30 80 -30 N
+P 2 0 1 20 -80 30 80 30 N
+X ~ 1 0 150 110 D 50 50 1 1 P
+X ~ 2 0 -150 110 U 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_Conn_01x02-Connector_Generic
+#
+DEF opto_board-rescue_Conn_01x02-Connector_Generic J 0 40 Y N 1 F N
+F0 "J" 0 100 50 H V C CNN
+F1 "opto_board-rescue_Conn_01x02-Connector_Generic" 0 -200 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ Connector*:*_1x??_*
+$ENDFPLIST
+DRAW
+S -50 -95 0 -105 1 1 6 N
+S -50 5 0 -5 1 1 6 N
+S -50 50 50 -150 1 1 10 f
+X Pin_1 1 -200 0 150 R 50 50 1 1 P
+X Pin_2 2 -200 -100 150 R 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_Conn_01x03-Connector_Generic
+#
+DEF opto_board-rescue_Conn_01x03-Connector_Generic J 0 40 Y N 1 F N
+F0 "J" 0 200 50 H V C CNN
+F1 "opto_board-rescue_Conn_01x03-Connector_Generic" 0 -200 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ Connector*:*_1x??_*
+$ENDFPLIST
+DRAW
+S -50 -95 0 -105 1 1 6 N
+S -50 5 0 -5 1 1 6 N
+S -50 105 0 95 1 1 6 N
+S -50 150 50 -150 1 1 10 f
+X Pin_1 1 -200 100 150 R 50 50 1 1 P
+X Pin_2 2 -200 0 150 R 50 50 1 1 P
+X Pin_3 3 -200 -100 150 R 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_D_Bridge_+-AA-Device
+#
+DEF opto_board-rescue_D_Bridge_+-AA-Device D 0 0 Y Y 1 F N
+F0 "D" 100 275 50 H V L CNN
+F1 "opto_board-rescue_D_Bridge_+-AA-Device" 100 200 50 H V L CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ D*Bridge*
+ D*Rectifier*
+$ENDFPLIST
+DRAW
+P 2 0 1 0 -100 150 -50 100 N
+P 2 0 1 0 -50 -100 -100 -150 N
+P 2 0 1 0 100 -50 150 -100 N
+P 2 0 1 0 100 50 150 100 N
+P 4 0 1 0 -150 100 -100 50 -75 125 -150 100 N
+P 4 0 1 0 -100 -50 -150 -100 -75 -125 -100 -50 N
+P 4 0 1 0 50 100 100 150 125 75 50 100 N
+P 4 0 1 0 125 -75 50 -100 100 -150 125 -75 N
+P 5 0 1 0 -200 0 0 -200 200 0 0 200 -200 0 N
+X + 1 300 0 100 L 50 50 1 1 P
+X - 2 -300 0 100 R 50 50 1 1 P
+X ~~ 3 0 300 100 D 50 50 1 1 P
+X ~~ 4 0 -300 100 U 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_D_Zener-Device
+#
+DEF opto_board-rescue_D_Zener-Device D 0 40 N N 1 F N
+F0 "D" 0 100 50 H V C CNN
+F1 "opto_board-rescue_D_Zener-Device" 0 -100 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ TO-???*
+ *_Diode_*
+ *SingleDiode*
+ D_*
+$ENDFPLIST
+DRAW
+P 2 0 1 0 50 0 -50 0 N
+P 3 0 1 8 -50 -50 -50 50 -30 50 N
+P 4 0 1 8 50 -50 50 50 -50 0 50 -50 N
+X K 1 -150 0 100 R 50 50 1 1 P
+X A 2 150 0 100 L 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_GND-power-opto_board-rescue
+#
+DEF opto_board-rescue_GND-power-opto_board-rescue #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -250 50 H I C CNN
+F1 "opto_board-rescue_GND-power-opto_board-rescue" 0 -150 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 6 0 1 0 0 0 0 -50 50 -50 0 -100 -50 -50 0 -50 N
+X GND 1 0 0 0 D 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_LED-Device
+#
+DEF opto_board-rescue_LED-Device D 0 40 N N 1 F N
+F0 "D" 0 100 50 H V C CNN
+F1 "opto_board-rescue_LED-Device" 0 -100 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ LED*
+ LED_SMD:*
+ LED_THT:*
+$ENDFPLIST
+DRAW
+P 2 0 1 8 -50 -50 -50 50 N
+P 2 0 1 0 -50 0 50 0 N
+P 4 0 1 8 50 -50 50 50 -50 0 50 -50 N
+P 5 0 1 0 -120 -30 -180 -90 -150 -90 -180 -90 -180 -60 N
+P 5 0 1 0 -70 -30 -130 -90 -100 -90 -130 -90 -130 -60 N
+X K 1 -150 0 100 R 50 50 1 1 P
+X A 2 150 0 100 L 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_R-Device
+#
+DEF opto_board-rescue_R-Device R 0 0 N Y 1 F N
+F0 "R" 80 0 50 V V C CNN
+F1 "opto_board-rescue_R-Device" 0 0 50 V V C CNN
+F2 "" -70 0 50 V I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ R_*
+$ENDFPLIST
+DRAW
+S -40 -100 40 100 0 1 10 N
+X ~ 1 0 150 50 D 50 50 1 1 P
+X ~ 2 0 -150 50 U 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# opto_board-rescue_nucleo_nano-eit_proprietary
+#
+DEF opto_board-rescue_nucleo_nano-eit_proprietary U 0 40 Y Y 1 F N
+F0 "U" 0 0 50 H V C CNN
+F1 "opto_board-rescue_nucleo_nano-eit_proprietary" 0 -1800 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+S -600 -50 600 -1750 0 1 0 N
+P 2 0 1 0 -250 -900 -300 -900 N
+P 2 0 1 0 -250 -900 -50 -800 N
+P 2 0 1 0 -250 -800 -300 -800 N
+P 2 0 1 0 -50 -900 -250 -800 N
+P 2 0 1 0 -50 -900 0 -900 N
+P 2 0 1 0 -50 -800 0 -800 N
+X PA9_Serial1_Tx 1 -700 -200 100 R 50 50 1 1 B
+X NC 10 -700 -1100 100 R 50 50 1 1 N
+X NC 11 -700 -1200 100 R 50 50 1 1 N
+X PA8_Tim1ch1p 12 -700 -1300 100 R 50 50 1 1 B
+X PA11 13 -700 -1400 100 R 50 50 1 1 B
+X PB5_LPTIM1 14 -700 -1500 100 R 50 50 1 1 B
+X PB4 15 -700 -1600 100 R 50 50 1 1 B
+X PB3_LED1 16 700 -1600 100 L 50 50 1 1 B
+X +3V3 17 700 -1500 100 L 50 50 1 1 B
+X Aref 18 700 -1400 100 L 50 50 1 1 B
+X PA0_Tim2ch1 19 700 -1300 100 L 50 50 1 1 B
+X AP10_Serial1_Rx 2 -700 -300 100 R 50 50 1 1 B
+X PA1 20 700 -1200 100 L 50 50 1 1 B
+X PA3_Serial2_Rx 21 700 -1100 100 L 50 50 1 1 B
+X PA4_adc9 22 700 -1000 100 L 50 50 1 1 B
+X PA5_adc10 23 700 -900 100 L 50 50 1 1 B
+X PA6_tim1brk 24 700 -800 100 L 50 50 1 1 B
+X PA7_Tim1ch1n 25 700 -700 100 L 50 50 1 1 B
+X PA2_Serial2_Tx 26 700 -600 100 L 50 50 1 1 B
+X +5V 27 700 -500 100 L 50 50 1 1 B
+X NRST 28 700 -400 100 L 50 50 1 1 B
+X GND 29 700 -300 100 L 50 50 1 1 B
+X NRST 3 -700 -400 100 R 50 50 1 1 B
+X +12V_in 30 700 -200 100 L 50 50 1 1 W
+X GND 4 -700 -500 100 R 50 50 1 1 B
+X PA12 5 -700 -600 100 R 50 50 1 1 B
+X PB0_adc15 6 -700 -700 100 R 50 50 1 1 B
+X PB7 7 -700 -800 100 R 50 50 1 1 B
+X PB6 8 -700 -900 100 R 50 50 1 1 B
+X PB1_LPTIM2 9 -700 -1000 100 R 50 50 1 1 B
+ENDDRAW
+ENDDEF
+#
+#End Library

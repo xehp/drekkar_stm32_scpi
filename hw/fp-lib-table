@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name eit_footprints)(type KiCad)(uri $KIPRJMOD/../eit_kicad_libraries/eit_footprints.pretty/)(options "")(descr ""))
+  (lib (name digikey-footprints)(type KiCad)(uri /home/henrik/git/CableAgeing2/kicad/digikey-kicad-library-master/digikey-footprints.pretty)(options "")(descr ""))
+)
