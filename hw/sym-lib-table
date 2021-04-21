@@ -1,5 +1,5 @@
 (sym_lib_table
-  (lib (name opto_board-rescue)(type Legacy)(uri ${KIPRJMOD}/../eit_kicad_libraries/eit_symbol_library/eit_proprietary.lib)(options "")(descr ""))
-  (lib (name eit_proprietary)(type Legacy)(uri ${KIPRJMOD}/../eit_kicad_libraries/eit_symbol_library/eit_proprietary.lib)(options "")(descr ""))
-  (lib (name board-rescue)(type Legacy)(uri /home/henrik/git/CableAgeing2/kicad/controlboard_5/board-rescue.lib)(options "")(descr ""))
+  (lib (name eit_proprietary)(type Legacy)(uri ${KIPRJMOD}/eit_kicad_libraries/eit_symbol_library/eit_proprietary.lib)(options "")(descr ""))
+  (lib (name board-rescue)(type Legacy)(uri ${KIPRJMOD}/rescue-backup/opto_board-cache-2019-03-29-18-14-51.lib)(options "")(descr ""))
+  (lib (name opto_board-rescue)(type Legacy)(uri ${KIPRJMOD}/opto_board-rescue.lib)(options "")(descr ""))
 )

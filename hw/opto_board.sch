@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 "Copuright (C) 2020 Henrik Björkman"
 $EndDescr
 $Comp
-L opto_board-rescue:LED-Device D6
+L opto_board-rescue:LED-Device-opto_board-rescue D6
 U 1 1 5E11B181
 P 4300 1800
 F 0 "D6" V 4338 1683 50  0000 R CNN
@@ -25,7 +25,7 @@ F 3 "~" H 4300 1800 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L opto_board-rescue:D_Zener-Device D8
+L opto_board-rescue:D_Zener-Device-opto_board-rescue D8
 U 1 1 5E171B70
 P 5200 7250
 F 0 "D8" V 5154 7329 50  0000 L CNN
@@ -36,7 +36,7 @@ F 3 "~" H 5200 7250 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR06
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR06
 U 1 1 5E171B76
 P 5200 7450
 F 0 "#PWR06" H 5200 7200 50  0001 C CNN
@@ -47,7 +47,7 @@ F 3 "" H 5200 7450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L opto_board-rescue:nucleo_nano-eit_proprietary U2
+L opto_board-rescue:nucleo_nano-eit_proprietary-opto_board-rescue U2
 U 1 1 5E112947
 P 4850 4500
 F 0 "U2" H 5250 4550 50  0000 C CNN
@@ -89,7 +89,7 @@ F 3 "" H 800 2100 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L opto_board-rescue:+5V-power-board-rescue #PWR02
+L opto_board-rescue:+5V-power-board-rescue-opto_board-rescue #PWR02
 U 1 1 5E11AF97
 P 5200 7050
 F 0 "#PWR02" H 5200 6900 50  0001 C CNN
@@ -100,7 +100,7 @@ F 3 "" H 5200 7050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L opto_board-rescue:C-Device C4
+L opto_board-rescue:C-Device-opto_board-rescue C4
 U 1 1 5E121A04
 P 3650 2600
 F 0 "C4" V 3500 2600 50  0000 C CNN
@@ -125,7 +125,7 @@ Wire Wire Line
 Wire Wire Line
 	1300 2100 1100 2100
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR01
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR01
 U 1 1 5E1525D4
 P 1200 2900
 F 0 "#PWR01" H 1200 2650 50  0001 C CNN
@@ -140,7 +140,7 @@ Wire Wire Line
 Wire Wire Line
 	1200 2500 1200 2900
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR04
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR04
 U 1 1 5E1A7F28
 P 2600 2550
 F 0 "#PWR04" H 2600 2300 50  0001 C CNN
@@ -155,7 +155,7 @@ Wire Wire Line
 Wire Wire Line
 	5550 4800 6700 4800
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR09
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR09
 U 1 1 5E1B22AD
 P 6700 6650
 F 0 "#PWR09" H 6700 6400 50  0001 C CNN
@@ -178,7 +178,7 @@ Wire Wire Line
 Wire Wire Line
 	2600 1200 2600 1300
 $Comp
-L opto_board-rescue:+5V-power-board-rescue #PWR010
+L opto_board-rescue:+5V-power-board-rescue-opto_board-rescue #PWR010
 U 1 1 5E1D8E20
 P 7300 4400
 F 0 "#PWR010" H 7300 4250 50  0001 C CNN
@@ -198,7 +198,7 @@ Connection ~ 1300 1900
 Wire Wire Line
 	1300 1900 1300 2000
 $Comp
-L opto_board-rescue:Conn_01x03-Connector_Generic J5
+L opto_board-rescue:Conn_01x03-Connector_Generic-opto_board-rescue J5
 U 1 1 5E1E18D7
 P 7400 1200
 F 0 "J5" H 7550 1200 50  0000 C CNN
@@ -215,7 +215,7 @@ Wire Wire Line
 Wire Wire Line
 	6800 5100 5550 5100
 $Comp
-L opto_board-rescue:Conn_01x03-Connector_Generic J4
+L opto_board-rescue:Conn_01x03-Connector_Generic-opto_board-rescue J4
 U 1 1 5E1EB3F0
 P 7400 800
 F 0 "J4" H 7550 800 50  0000 C CNN
@@ -245,7 +245,7 @@ Connection ~ 1400 2100
 Wire Wire Line
 	1400 2100 1400 2200
 $Comp
-L opto_board-rescue:R-Device R4
+L opto_board-rescue:R-Device-opto_board-rescue R4
 U 1 1 5E230F14
 P 800 1050
 F 0 "R4" V 700 1000 50  0000 C CNN
@@ -273,7 +273,7 @@ NoConn ~ 1100 2400
 NoConn ~ 5550 4900
 NoConn ~ 4150 4900
 $Comp
-L opto_board-rescue:C-Device C7
+L opto_board-rescue:C-Device-opto_board-rescue C7
 U 1 1 5E195706
 P 1600 1600
 F 0 "C7" H 1485 1554 50  0000 R CNN
@@ -284,7 +284,7 @@ F 3 "~" H 1600 1600 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L opto_board-rescue:C-Device C6
+L opto_board-rescue:C-Device-opto_board-rescue C6
 U 1 1 5E1958F9
 P 1600 1100
 F 0 "C6" H 1485 1054 50  0000 R CNN
@@ -295,7 +295,7 @@ F 3 "~" H 1600 1100 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L opto_board-rescue:C-Device C8
+L opto_board-rescue:C-Device-opto_board-rescue C8
 U 1 1 5E195975
 P 3550 1100
 F 0 "C8" H 3435 1054 50  0000 R CNN
@@ -342,7 +342,7 @@ Wire Wire Line
 NoConn ~ 5550 6100
 NoConn ~ 3200 1800
 $Comp
-L opto_board-rescue:LED-Device D12
+L opto_board-rescue:LED-Device-opto_board-rescue D12
 U 1 1 5E2292B9
 P 8600 4650
 F 0 "D12" V 8638 4533 50  0000 R CNN
@@ -358,7 +358,7 @@ Connection ~ 6700 6500
 Wire Wire Line
 	6700 6500 3550 6500
 $Comp
-L opto_board-rescue:LED-Device D2
+L opto_board-rescue:LED-Device-opto_board-rescue D2
 U 1 1 5E3B06FE
 P 4400 7250
 F 0 "D2" V 4450 7400 50  0000 R CNN
@@ -373,7 +373,7 @@ Wire Wire Line
 Wire Wire Line
 	4400 7400 4400 7450
 $Comp
-L opto_board-rescue:+3.3V-power-board-rescue #PWR013
+L opto_board-rescue:+3.3V-power-board-rescue-opto_board-rescue #PWR013
 U 1 1 5E126993
 P 7650 4600
 F 0 "#PWR013" H 7650 4450 50  0001 C CNN
@@ -386,7 +386,7 @@ $EndComp
 Wire Wire Line
 	7650 4600 7650 6000
 $Comp
-L opto_board-rescue:+3.3V-power-board-rescue #PWR012
+L opto_board-rescue:+3.3V-power-board-rescue-opto_board-rescue #PWR012
 U 1 1 5E13E3D8
 P 4300 1550
 F 0 "#PWR012" H 4300 1400 50  0001 C CNN
@@ -397,7 +397,7 @@ F 3 "" H 4300 1550 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L opto_board-rescue:+3.3V-power-board-rescue #PWR014
+L opto_board-rescue:+3.3V-power-board-rescue-opto_board-rescue #PWR014
 U 1 1 5E13EBE4
 P 8600 4300
 F 0 "#PWR014" H 8600 4150 50  0001 C CNN
@@ -408,7 +408,7 @@ F 3 "" H 8600 4300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L opto_board-rescue:+3.3V-power-board-rescue #PWR07
+L opto_board-rescue:+3.3V-power-board-rescue-opto_board-rescue #PWR07
 U 1 1 5E13F307
 P 3650 2350
 F 0 "#PWR07" H 3650 2200 50  0001 C CNN
@@ -423,7 +423,7 @@ Wire Wire Line
 Wire Wire Line
 	3650 2850 3650 2800
 $Comp
-L opto_board-rescue:D_Zener-Device D4
+L opto_board-rescue:D_Zener-Device-opto_board-rescue D4
 U 1 1 5E1575D8
 P 3900 2600
 F 0 "D4" V 3854 2679 50  0000 L CNN
@@ -448,7 +448,7 @@ Connection ~ 3650 2800
 Wire Wire Line
 	3650 2800 3650 2750
 $Comp
-L opto_board-rescue:+3.3V-power-board-rescue #PWR0103
+L opto_board-rescue:+3.3V-power-board-rescue-opto_board-rescue #PWR0103
 U 1 1 5E1B6CCA
 P 2600 1200
 F 0 "#PWR0103" H 2600 1050 50  0001 C CNN
@@ -459,7 +459,7 @@ F 3 "" H 2600 1200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L opto_board-rescue:C-Device C5
+L opto_board-rescue:C-Device-opto_board-rescue C5
 U 1 1 5E1C3CE0
 P 3800 7250
 F 0 "C5" V 3650 7250 50  0000 C CNN
@@ -470,7 +470,7 @@ F 3 "~" H 3800 7250 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L opto_board-rescue:+3.3V-power-board-rescue #PWR0104
+L opto_board-rescue:+3.3V-power-board-rescue-opto_board-rescue #PWR0104
 U 1 1 5E1C3DCE
 P 3800 7050
 F 0 "#PWR0104" H 3800 6900 50  0001 C CNN
@@ -481,7 +481,7 @@ F 3 "" H 3800 7050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR0105
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR0105
 U 1 1 5E1C3E79
 P 3800 7450
 F 0 "#PWR0105" H 3800 7200 50  0001 C CNN
@@ -496,7 +496,7 @@ Wire Wire Line
 Wire Wire Line
 	3800 7050 3800 7100
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR0106
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR0106
 U 1 1 5E1DC32D
 P 4400 7450
 F 0 "#PWR0106" H 4400 7200 50  0001 C CNN
@@ -507,7 +507,7 @@ F 3 "" H 4400 7450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L opto_board-rescue:+3.3V-power-board-rescue #PWR0107
+L opto_board-rescue:+3.3V-power-board-rescue-opto_board-rescue #PWR0107
 U 1 1 5E1DC4FB
 P 4400 7050
 F 0 "#PWR0107" H 4400 6900 50  0001 C CNN
@@ -536,7 +536,7 @@ Wire Wire Line
 Wire Wire Line
 	4600 800  4600 2100
 $Comp
-L opto_board-rescue:Conn_01x03-Connector_Generic J7
+L opto_board-rescue:Conn_01x03-Connector_Generic-opto_board-rescue J7
 U 1 1 5E39CDBB
 P 1200 6400
 F 0 "J7" H 1120 6075 50  0000 C CNN
@@ -547,7 +547,7 @@ F 3 "~" H 1200 6400 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L opto_board-rescue:Conn_01x03-Connector_Generic J6
+L opto_board-rescue:Conn_01x03-Connector_Generic-opto_board-rescue J6
 U 1 1 5E39D0E5
 P 1200 5900
 F 0 "J6" H 1120 5575 50  0000 C CNN
@@ -568,7 +568,7 @@ Wire Wire Line
 Wire Wire Line
 	1900 6000 4150 6000
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR0110
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR0110
 U 1 1 5E3B3982
 P 1500 6700
 F 0 "#PWR0110" H 1500 6450 50  0001 C CNN
@@ -588,7 +588,7 @@ Wire Wire Line
 	1500 6000 1400 6000
 Connection ~ 1500 6500
 $Comp
-L opto_board-rescue:+5V-power-board-rescue #PWR0111
+L opto_board-rescue:+5V-power-board-rescue-opto_board-rescue #PWR0111
 U 1 1 5E3D5CBE
 P 1600 5600
 F 0 "#PWR0111" H 1600 5450 50  0001 C CNN
@@ -612,7 +612,7 @@ Wire Wire Line
 Wire Wire Line
 	5550 5800 8600 5800
 $Comp
-L opto_board-rescue:Conn_01x03-Connector_Generic J8
+L opto_board-rescue:Conn_01x03-Connector_Generic-opto_board-rescue J8
 U 1 1 5E45E28C
 P 10600 5300
 F 0 "J8" H 10519 4975 50  0000 C CNN
@@ -623,7 +623,7 @@ F 3 "~" H 10600 5300 50  0001 C CNN
 	1    0    0    1   
 $EndComp
 $Comp
-L opto_board-rescue:Conn_01x03-Connector_Generic J9
+L opto_board-rescue:Conn_01x03-Connector_Generic-opto_board-rescue J9
 U 1 1 5E469F67
 P 10600 5800
 F 0 "J9" H 10519 5475 50  0000 C CNN
@@ -646,7 +646,7 @@ Wire Wire Line
 Wire Wire Line
 	9000 5500 5550 5500
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR0112
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR0112
 U 1 1 5E4822FA
 P 10300 6000
 F 0 "#PWR0112" H 10300 5750 50  0001 C CNN
@@ -666,7 +666,7 @@ Wire Wire Line
 	10300 5400 10400 5400
 Connection ~ 10300 5900
 $Comp
-L opto_board-rescue:+3.3V-power-board-rescue #PWR0113
+L opto_board-rescue:+3.3V-power-board-rescue-opto_board-rescue #PWR0113
 U 1 1 5E49B27F
 P 10200 5000
 F 0 "#PWR0113" H 10200 4850 50  0001 C CNN
@@ -686,7 +686,7 @@ Wire Wire Line
 	10200 5800 10400 5800
 Connection ~ 10200 5300
 $Comp
-L opto_board-rescue:R-Device R8
+L opto_board-rescue:R-Device-opto_board-rescue R8
 U 1 1 5E4B522F
 P 9100 4750
 F 0 "R8" V 9000 4700 50  0000 C CNN
@@ -697,7 +697,7 @@ F 3 "~" H 9100 4750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L opto_board-rescue:R-Device R9
+L opto_board-rescue:R-Device-opto_board-rescue R9
 U 1 1 5E4CEF1C
 P 9600 4750
 F 0 "R9" V 9500 4700 50  0000 C CNN
@@ -729,7 +729,7 @@ Wire Wire Line
 Wire Wire Line
 	1900 5500 4150 5500
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR0115
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR0115
 U 1 1 5E12BEB6
 P 3650 2850
 F 0 "#PWR0115" H 3650 2600 50  0001 C CNN
@@ -740,7 +740,7 @@ F 3 "" H 3650 2850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L opto_board-rescue:C-Device C9
+L opto_board-rescue:C-Device-opto_board-rescue C9
 U 1 1 5E12D248
 P 9100 6050
 F 0 "C9" H 8985 6004 50  0000 R CNN
@@ -751,7 +751,7 @@ F 3 "~" H 9100 6050 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L opto_board-rescue:C-Device C10
+L opto_board-rescue:C-Device-opto_board-rescue C10
 U 1 1 5E12D323
 P 9600 6000
 F 0 "C10" H 9485 5954 50  0000 R CNN
@@ -768,7 +768,7 @@ Wire Wire Line
 Wire Wire Line
 	9600 6250 9600 6150
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR03
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR03
 U 1 1 5E136410
 P 9350 6300
 F 0 "#PWR03" H 9350 6050 50  0001 C CNN
@@ -788,7 +788,7 @@ Wire Wire Line
 Wire Wire Line
 	9600 5850 9600 5700
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR0108
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR0108
 U 1 1 5E1783A3
 P 9750 4300
 F 0 "#PWR0108" H 9750 4050 50  0001 C CNN
@@ -807,7 +807,7 @@ Wire Wire Line
 Wire Wire Line
 	8600 4300 8600 4500
 $Comp
-L opto_board-rescue:D_Bridge_+-AA-Device D7
+L opto_board-rescue:D_Bridge_+-AA-Device-opto_board-rescue D7
 U 1 1 5E13C1AF
 P 1600 3600
 F 0 "D7" H 1750 3800 50  0000 L CNN
@@ -842,7 +842,7 @@ Wire Wire Line
 Wire Wire Line
 	3650 4700 4150 4700
 $Comp
-L opto_board-rescue:Conn_01x02-Connector_Generic J1
+L opto_board-rescue:Conn_01x02-Connector_Generic-opto_board-rescue J1
 U 1 1 5E13D6E9
 P 800 3650
 F 0 "J1" H 720 3325 50  0000 C CNN
@@ -869,7 +869,7 @@ Wire Wire Line
 Wire Wire Line
 	1600 3950 1600 3900
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR0114
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR0114
 U 1 1 5E154435
 P 1250 4100
 F 0 "#PWR0114" H 1250 3850 50  0001 C CNN
@@ -884,7 +884,7 @@ Wire Wire Line
 Wire Wire Line
 	1250 3600 1250 4050
 $Comp
-L opto_board-rescue:R-Device R1
+L opto_board-rescue:R-Device-opto_board-rescue R1
 U 1 1 5E16030F
 P 2700 3800
 F 0 "R1" V 2600 3750 50  0000 C CNN
@@ -907,7 +907,7 @@ Wire Wire Line
 Wire Wire Line
 	5900 5700 5900 3600
 $Comp
-L opto_board-rescue:C-Device C1
+L opto_board-rescue:C-Device-opto_board-rescue C1
 U 1 1 5E13D649
 P 3150 3800
 F 0 "C1" H 3035 3754 50  0000 R CNN
@@ -937,7 +937,7 @@ NoConn ~ 4150 6100
 NoConn ~ 5550 5900
 NoConn ~ 5550 5300
 $Comp
-L opto_board-rescue:C-Device C11
+L opto_board-rescue:C-Device-opto_board-rescue C11
 U 1 1 5E1C3C65
 P 3900 1500
 F 0 "C11" H 3785 1454 50  0000 R CNN
@@ -962,7 +962,7 @@ Wire Wire Line
 Wire Wire Line
 	3300 900  3300 1600
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR05
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR05
 U 1 1 5E217677
 P 3550 1300
 F 0 "#PWR05" H 3550 1050 50  0001 C CNN
@@ -973,7 +973,7 @@ F 3 "" H 3550 1300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR08
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR08
 U 1 1 5E26ECD8
 P 3900 1700
 F 0 "#PWR08" H 3900 1450 50  0001 C CNN
@@ -996,7 +996,7 @@ pulse \ncounter 1
 Text Notes 700  5950 0    50   ~ 0
 pulse \ncounter 2
 $Comp
-L opto_board-rescue:R-Device R5
+L opto_board-rescue:R-Device-opto_board-rescue R5
 U 1 1 606FDE75
 P 2250 3600
 F 0 "R5" V 2150 3550 50  0000 C CNN
@@ -1030,7 +1030,7 @@ Wire Wire Line
 	8500 1200 8500 1700
 Connection ~ 8500 1200
 $Comp
-L opto_board-rescue:+5V-power-board-rescue #PWR0102
+L opto_board-rescue:+5V-power-board-rescue-opto_board-rescue #PWR0102
 U 1 1 5E116347
 P 8500 950
 F 0 "#PWR0102" H 8500 800 50  0001 C CNN
@@ -1043,7 +1043,7 @@ $EndComp
 Wire Wire Line
 	8200 2250 8200 2100
 $Comp
-L opto_board-rescue:GND-power-opto_board-rescue #PWR0101
+L opto_board-rescue:GND-power-opto_board-rescue-opto_board-rescue #PWR0101
 U 1 1 5E111589
 P 8200 2250
 F 0 "#PWR0101" H 8200 2000 50  0001 C CNN
@@ -1082,7 +1082,7 @@ $EndComp
 Wire Wire Line
 	8500 1200 9700 1200
 $Comp
-L opto_board-rescue:R-Device R2
+L opto_board-rescue:R-Device-opto_board-rescue R2
 U 1 1 5E08D481
 P 8900 1900
 F 0 "R2" V 8800 1850 50  0000 C CNN
@@ -1093,7 +1093,7 @@ F 3 "~" H 8900 1900 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L opto_board-rescue:R-Device R3
+L opto_board-rescue:R-Device-opto_board-rescue R3
 U 1 1 5E08D2BB
 P 9050 1550
 F 0 "R3" V 8950 1400 50  0000 C CNN
@@ -1107,7 +1107,7 @@ Wire Wire Line
 	9300 1700 9600 1700
 Connection ~ 9300 1700
 $Comp
-L opto_board-rescue:C-Device C2
+L opto_board-rescue:C-Device-opto_board-rescue C2
 U 1 1 5E08D0D5
 P 9300 1850
 F 0 "C2" H 9185 1804 50  0000 R CNN
@@ -1120,7 +1120,7 @@ $EndComp
 Wire Wire Line
 	8900 1700 9300 1700
 $Comp
-L opto_board-rescue:C-Device C3
+L opto_board-rescue:C-Device-opto_board-rescue C3
 U 1 1 5E08D050
 P 9050 1350
 F 0 "C3" V 9000 1250 50  0000 C CNN

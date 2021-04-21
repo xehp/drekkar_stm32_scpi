@@ -117,11 +117,11 @@ X NC 4 400 -350 100 L 50 50 1 1 N
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_+3.3V-power-board-rescue
+# opto_board-rescue_+3.3V-power-board-rescue-opto_board-rescue
 #
-DEF opto_board-rescue_+3.3V-power-board-rescue #PWR 0 0 Y Y 1 F P
+DEF opto_board-rescue_+3.3V-power-board-rescue-opto_board-rescue #PWR 0 0 Y Y 1 F P
 F0 "#PWR" 0 -150 50 H I C CNN
-F1 "opto_board-rescue_+3.3V-power-board-rescue" 0 140 50 H V C CNN
+F1 "opto_board-rescue_+3.3V-power-board-rescue-opto_board-rescue" 0 140 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
@@ -132,11 +132,11 @@ X +3V3 1 0 0 0 U 50 50 1 1 W N
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_+5V-power-board-rescue
+# opto_board-rescue_+5V-power-board-rescue-opto_board-rescue
 #
-DEF opto_board-rescue_+5V-power-board-rescue #PWR 0 0 Y Y 1 F P
+DEF opto_board-rescue_+5V-power-board-rescue-opto_board-rescue #PWR 0 0 Y Y 1 F P
 F0 "#PWR" 0 -150 50 H I C CNN
-F1 "opto_board-rescue_+5V-power-board-rescue" 0 140 50 H V C CNN
+F1 "opto_board-rescue_+5V-power-board-rescue-opto_board-rescue" 0 140 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
@@ -147,11 +147,11 @@ X +5V 1 0 0 0 U 50 50 1 1 W N
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_C-Device
+# opto_board-rescue_C-Device-opto_board-rescue
 #
-DEF opto_board-rescue_C-Device C 0 10 N Y 1 F N
+DEF opto_board-rescue_C-Device-opto_board-rescue C 0 10 N Y 1 F N
 F0 "C" 25 100 50 H V L CNN
-F1 "opto_board-rescue_C-Device" 25 -100 50 H V L CNN
+F1 "opto_board-rescue_C-Device-opto_board-rescue" 25 -100 50 H V L CNN
 F2 "" 38 -150 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -165,11 +165,11 @@ X ~ 2 0 -150 110 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_Conn_01x02-Connector_Generic
+# opto_board-rescue_Conn_01x02-Connector_Generic-opto_board-rescue
 #
-DEF opto_board-rescue_Conn_01x02-Connector_Generic J 0 40 Y N 1 F N
+DEF opto_board-rescue_Conn_01x02-Connector_Generic-opto_board-rescue J 0 40 Y N 1 F N
 F0 "J" 0 100 50 H V C CNN
-F1 "opto_board-rescue_Conn_01x02-Connector_Generic" 0 -200 50 H V C CNN
+F1 "opto_board-rescue_Conn_01x02-Connector_Generic-opto_board-rescue" 0 -200 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -184,11 +184,11 @@ X Pin_2 2 -200 -100 150 R 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_Conn_01x03-Connector_Generic
+# opto_board-rescue_Conn_01x03-Connector_Generic-opto_board-rescue
 #
-DEF opto_board-rescue_Conn_01x03-Connector_Generic J 0 40 Y N 1 F N
+DEF opto_board-rescue_Conn_01x03-Connector_Generic-opto_board-rescue J 0 40 Y N 1 F N
 F0 "J" 0 200 50 H V C CNN
-F1 "opto_board-rescue_Conn_01x03-Connector_Generic" 0 -200 50 H V C CNN
+F1 "opto_board-rescue_Conn_01x03-Connector_Generic-opto_board-rescue" 0 -200 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -205,11 +205,11 @@ X Pin_3 3 -200 -100 150 R 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_D_Bridge_+-AA-Device
+# opto_board-rescue_D_Bridge_+-AA-Device-opto_board-rescue
 #
-DEF opto_board-rescue_D_Bridge_+-AA-Device D 0 0 Y Y 1 F N
+DEF opto_board-rescue_D_Bridge_+-AA-Device-opto_board-rescue D 0 0 Y Y 1 F N
 F0 "D" 100 275 50 H V L CNN
-F1 "opto_board-rescue_D_Bridge_+-AA-Device" 100 200 50 H V L CNN
+F1 "opto_board-rescue_D_Bridge_+-AA-Device-opto_board-rescue" 100 200 50 H V L CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -233,11 +233,11 @@ X ~~ 4 0 -300 100 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_D_Zener-Device
+# opto_board-rescue_D_Zener-Device-opto_board-rescue
 #
-DEF opto_board-rescue_D_Zener-Device D 0 40 N N 1 F N
+DEF opto_board-rescue_D_Zener-Device-opto_board-rescue D 0 40 N N 1 F N
 F0 "D" 0 100 50 H V C CNN
-F1 "opto_board-rescue_D_Zener-Device" 0 -100 50 H V C CNN
+F1 "opto_board-rescue_D_Zener-Device-opto_board-rescue" 0 -100 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -255,11 +255,11 @@ X A 2 150 0 100 L 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_GND-power-opto_board-rescue
+# opto_board-rescue_GND-power-opto_board-rescue-opto_board-rescue
 #
-DEF opto_board-rescue_GND-power-opto_board-rescue #PWR 0 0 Y Y 1 F P
+DEF opto_board-rescue_GND-power-opto_board-rescue-opto_board-rescue #PWR 0 0 Y Y 1 F P
 F0 "#PWR" 0 -250 50 H I C CNN
-F1 "opto_board-rescue_GND-power-opto_board-rescue" 0 -150 50 H V C CNN
+F1 "opto_board-rescue_GND-power-opto_board-rescue-opto_board-rescue" 0 -150 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
@@ -268,11 +268,11 @@ X GND 1 0 0 0 D 50 50 1 1 W N
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_LED-Device
+# opto_board-rescue_LED-Device-opto_board-rescue
 #
-DEF opto_board-rescue_LED-Device D 0 40 N N 1 F N
+DEF opto_board-rescue_LED-Device-opto_board-rescue D 0 40 N N 1 F N
 F0 "D" 0 100 50 H V C CNN
-F1 "opto_board-rescue_LED-Device" 0 -100 50 H V C CNN
+F1 "opto_board-rescue_LED-Device-opto_board-rescue" 0 -100 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -291,11 +291,11 @@ X A 2 150 0 100 L 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_R-Device
+# opto_board-rescue_R-Device-opto_board-rescue
 #
-DEF opto_board-rescue_R-Device R 0 0 N Y 1 F N
+DEF opto_board-rescue_R-Device-opto_board-rescue R 0 0 N Y 1 F N
 F0 "R" 80 0 50 V V C CNN
-F1 "opto_board-rescue_R-Device" 0 0 50 V V C CNN
+F1 "opto_board-rescue_R-Device-opto_board-rescue" 0 0 50 V V C CNN
 F2 "" -70 0 50 V I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -308,11 +308,11 @@ X ~ 2 0 -150 50 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# opto_board-rescue_nucleo_nano-eit_proprietary
+# opto_board-rescue_nucleo_nano-eit_proprietary-opto_board-rescue
 #
-DEF opto_board-rescue_nucleo_nano-eit_proprietary U 0 40 Y Y 1 F N
+DEF opto_board-rescue_nucleo_nano-eit_proprietary-opto_board-rescue U 0 40 Y Y 1 F N
 F0 "U" 0 0 50 H V C CNN
-F1 "opto_board-rescue_nucleo_nano-eit_proprietary" 0 -1800 50 H V C CNN
+F1 "opto_board-rescue_nucleo_nano-eit_proprietary-opto_board-rescue" 0 -1800 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
