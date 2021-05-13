@@ -17,16 +17,16 @@
 
 // In our application we needed an extra receiver.
 // The sender was only used for testing/debugging.
-// If no transmit is needed do not define SOFTUART1_TX_PIN below
-// Or if receive then do not define SOFTUART1_RX_PIN
+// If transmit is not needed: do not define SOFTUART1_TX_PIN below.
+// If receive is not needed: do not define SOFTUART1_RX_PIN below.
 
 // Choose here which IO pins to use
 // Recommended is TX=PB6, RX=PB7
-// If receiving or transmitting is not needed comment that pin out.
+// If receiving or transmitting is not needed comment that pin out respecively.
 #define SOFTUART1_PORT GPIOA
 #define SOFTUART1_TX_PIN 7
 #define SOFTUART1_RX_PIN 8
-// Note that PA3 can be used by USART2 or LPUART also.
+// Note that PA3 can/might be used by USART2 or LPUART also.
 
 // Using these to test, soft uart will replace usart1
 //#define SOFTUART1_PORT GPIOA
@@ -43,10 +43,10 @@
 // or more.
 #ifdef SOFTUART1_RX_PIN
 // TIM2_TICKS_PER_SEC need to be at least 3 times baudrate for receiving to work.
-// For noise filtering to work it needs a little more.
+// For noise filtering to work it needs a little more like 5.
 #define TIM2_TICKS_PER_SEC (SOFTUART1_BAUDRATE*5)
 #else
-// For receiving only ticks can be same as baudrate.
+// If only sending then tick rate can be same as baudrate.
 #define TIM2_TICKS_PER_SEC (SOFTUART1_BAUDRATE)
 #endif
 
@@ -54,7 +54,7 @@
 // If its OK to hardcode baudrate then use this option to
 // save some CPU time and reduce code size.
 // If this option is not used baudrate can be changed
-// while the poregram is running.
+// while the program is running.
 //#define SERIAL_SOFT_HARDCODED_BAUDRATE
 
 

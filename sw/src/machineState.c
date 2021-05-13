@@ -18,21 +18,15 @@ Henrik Bjorkman
 #include "eeprom.h"
 #include "messageNames.h"
 #include "log.h"
-#include "portsPwm.h"
-#include "relay.h"
-#include "translator.h"
-#include "scan.h"
 #include "machineState.h"
-#include "pwm1.h"
-#include "serialDev.h"
 #include "debugLog.h"
 #include "messageUtilities.h"
-
+#include "serialDev.h"
 
 DbfSerializer statusDbfMessage;
 
 int errorReported = portsErrorOk; // REPORTED_ERROR_PAR
-int startCmd=cmdPauseCommand;
+//int startCmd=cmdPauseCommand;
 
 int64_t cyclesToDo = INT64_MAX; // CYCLES_TO_DO_PAR
 int64_t totalCyclesPerformed = 0; // TOTAL_CYCLES_PERFORMED_PAR
@@ -91,17 +85,6 @@ void errorReportError(int errorCode)
 {
 	if (errorReported == portsErrorOk)
 	{
-		#if (defined PWM_PORT)
-		pwm_break();
-		#endif
-		portsSetDutyOff();
-		scanBreak();
-                // TODO Trigger a save also or not?
-		//if (errorCode != portsErrorOk)
-		//{
-		//  eepromSetSavePending(); 
-                //}
-		relayOff();
 		logInt3(ERROR_REPORT, errorCode, systemGetSysTimeMs());
 		errorReported = errorCode;
 	}
@@ -119,7 +102,7 @@ void errorAssert(const char *msg, const char *file, int line)
 	sendLogAssertError(msg, file, line);
 
 
-#if (defined DEBUG_UART)
+#if (defined __arm__)
 	debug_print("\nassert fail ");
 	debug_print(file);
 	debug_print(" ");
@@ -138,30 +121,12 @@ void errorAssert(const char *msg, const char *file, int line)
 void errorReset()
 {
 	errorReported = portsErrorOk;
-	startCmd = cmdResetCommand;
 }
 
 void machineStateInit()
 {
-	startCmd = (ee.optionsBitMask >> AUTOSTART_BIT) & 1;
-
-	resetMaxAllowed();
 }
 
-void machineRequestPause()
-{
-	startCmd=cmdPauseCommand;
-}
-
-void machineRequestRun()
-{
-	startCmd=cmdRunCommand;
-}
-
-void machineRequestReset()
-{
-	startCmd=cmdResetCommand;
-}
 
 
 
@@ -171,79 +136,6 @@ void machineSupervise(void)
 {
 }
 
-machineRequestedStateEnum machineGetRequestedState(void)
-{
-	return startCmd;
-}
 
-/*DbfCodeStateEnum machineStateParseCyclesToDo(DbfUnserializer *dbfPacket, int64_t replyToId, int64_t replyToRef)
-{
-	const int64_t tmp = DbfUnserializerReadInt64(dbfPacket);
-	cyclesToDo = tmp;
-	replyToSetCommand(CYCLES_TO_DO_PAR, cyclesToDo, replyToId, replyToRef);
-	return dbfPacket->decodeState == DbfErrorState;
-}
 
-DbfCodeStateEnum parseMachineSessionNumber(DbfUnserializer *dbfPacket, int64_t replyToId, int64_t replyToRef)
-{
-	machineSessionNumber = DbfUnserializerReadInt64(dbfPacket);
-	replyToSetCommand(MACHINE_SESSION_NUMBER, machineSessionNumber, replyToId, replyToRef);
-	return dbfPacket->decodeState == DbfErrorState;
-}
 
-// TODO This can be moved back to cmd.c
-int machineReplyCyclesToDo(DbfUnserializer *dbfPacket, int64_t replyToId, int64_t replyToRef)
-{
-	replyToGetCommand(CYCLES_TO_DO_PAR, cyclesToDo, replyToId, replyToRef);
-	return 0;
-}
-
-// TODO This can be moved back to cmd.c
-int machineReplySessionNumber(DbfUnserializer *dbfPacket, int64_t replyToId, int64_t replyToRef)
-{
-	replyToGetCommand(MACHINE_SESSION_NUMBER, machineSessionNumber, replyToId, replyToRef);
-	return 0;
-}
-
-// TODO This can be moved back to cmd.c
-int machineReplyTotalCyclesPerformed(DbfUnserializer *dbfPacket, int64_t replyToId, int64_t replyToRef)
-{
-	replyToGetCommand(TOTAL_CYCLES_PERFORMED_PAR, totalCyclesPerformed, replyToId, replyToRef);
-	return 0;
-}*/
-
-int32_t getWantedCurrent_mA(void)
-{
-	return ee.wantedCurrent_mA;
-}
-
-int32_t getWantedVoltage_mV(void)
-{
-	return ee.wantedVoltage_mV;
-}
-
-void resetMaxAllowed()
-{
-	if (ee.wantedCurrent_mA < 0x7FFFFFFF/4)
-	{
-		maxAllowedCurrent_mA = (ee.wantedCurrent_mA*4)/3;
-	}
-	else
-	{
-		maxAllowedCurrent_mA = 0x7FFFFFFF;
-	}
-
-	if ((ee.wantedVoltage_mV != NO_VOLT_VALUE) && (ee.wantedVoltage_mV < 0x7FFFFFFF/4))
-	{
-		maxAllowedExternalVoltage_mV = (ee.wantedVoltage_mV*4)/3;
-	}
-	else
-	{
-		maxAllowedExternalVoltage_mV = 0x7FFFFFFF;
-	}
-}
-
-int64_t getCyclesToDo()
-{
-	return cyclesToDo;
-}

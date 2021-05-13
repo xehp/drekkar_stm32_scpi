@@ -14,8 +14,8 @@ All rights reserved etc etc...
 #include "messageNames.h"
 
 
-#define LOG_PREFIX "\""
-#define LOG_SUFIX "\"\r\n"
+#define LOG_PREFIX "l "
+#define LOG_SUFIX "\r\n"
 
 
 // msg shall be one of the values in enum AVR_CFG_LOG_MESSAGES.
@@ -33,6 +33,15 @@ void logInitAndAddHeader(DbfSerializer *dbfSerializer, AVR_CFG_LOG_MESSAGES msg)
 // Returns true if parameter was changed and therefore logged.
 int logIfParameterChanged(PARAMETER_CODES par, int64_t value);
 void logResetTime();
-void logMediumTick();
+
+#if defined __linux__ || defined __WIN32
+void logScanningAndRunningStateToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
+void logOldFormatsFreqCurrVoltToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
+void logStatusMessageToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
+void log_message_to_string(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
+void log_reply_message_to_string(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
+//void log_voltage_message_to_string(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
+void logDbfAsHexAndText(const unsigned char *msgPtr, int msgLen);
+#endif
 
 #endif

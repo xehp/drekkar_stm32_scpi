@@ -443,6 +443,8 @@ static int scientificMessageReceived()
 	{
 		// Filter out extreme values in case of transmission errors.
 		// easy way is to take median value of last 3 values.
+		// There was no CRC on the message from multimeter so to avoid
+		// sporadical errors in the transfer we use the 3 latest values.
 
 		voltage_mv2=voltage_mv1;
 		voltage_mv1=voltage_mv0;
@@ -450,6 +452,7 @@ static int scientificMessageReceived()
 
 		if (nOfvaluesAvailable>=2)
 		{
+			// Find median value of the latest 3 values.
 			if ((voltage_mv0 >= voltage_mv1) && (voltage_mv0 <= voltage_mv2))
 			{
 				voltage_mv = voltage_mv0;

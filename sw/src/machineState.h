@@ -32,14 +32,9 @@ extern int32_t maxAllowedCurrent_mA;
 extern int32_t maxAllowedExternalVoltage_mV;
 
 
-void machineRequestPause();
-void machineRequestRun();
-void machineRequestReset();
-
 void secAndLogInitStatusMessageAddHeader(DbfSerializer *statusDbfMessage, STATUS_MESSAGES msg);
 
 
-machineRequestedStateEnum machineGetRequestedState(void);
 
 void machineStateInit();
 
@@ -60,13 +55,6 @@ void errorReportError(int errorCode);
 int errorGetReportedError();
 void errorAssert(const char *msg, const char *file, int line);
 void errorReset();
-
-int32_t getWantedCurrent_mA(void);
-int32_t getWantedVoltage_mV(void);
-
-int64_t getCyclesToDo();
-
-void resetMaxAllowed();
 
 #ifndef ASSERT
 #if (defined __linux__)

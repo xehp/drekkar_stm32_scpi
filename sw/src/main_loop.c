@@ -1,7 +1,7 @@
 /*
 main_loop.c
 
-Copyright (C) 2019 Henrik Bjorkman www.eit.se/hb.
+Copyright (C) 2021 Henrik Bjorkman www.eit.se/hb.
 All rights reserved etc etc...
 
 
@@ -30,78 +30,36 @@ Henrik
 #include "systemInit.h"
 #include "timerDev.h"
 #include "adcDev.h"
-#include "compDev.h"
-#include "supervise.h"
 #include "mathi.h"
-#include "externalSensor.h"
+#include "scpi.h"
 #include "cmd.h"
-#include "scan.h"
 #include "fan.h"
 #include "temp.h"
+#include "current.h"
 #include "log.h"
-#include "relay.h"
 #include "version.h"
 #include "main_loop.h"
 #include "cfg.h"
 #include "eeprom.h"
 #include "mainSeconds.h"
-#include "measuringFilter.h"
-#include "portsPwm.h"
-#include "pwm1.h"
-#include "serialDev.h"
 #include "debugLog.h"
+#include "serialDev.h"
 #include "messageUtilities.h"
 
 
 
-// What shall the timeout be when waiting for current direction change
-//const int16_t waitingTimeout=(DIV_ROUND_UP(AVR_TMR0_TICKS_PER_SEC(),25));
-
-// Specify here a little delay before trying to detect current direction, This is given in the "unit" number of turns in the main loop. For how many turns per second we make see mainLoopCounter.
-// So 1 here gives about 10 us
-// 25 gives about 250 us
-
-
-// 200 gives 2 ms which in turn gives about 250 Hz
-const int16_t HalfCycleTimeout_mlt=10; // Unit is main loop turns (approx 10uS), So 100 here will give a frequenzy of about 500Hz, later we need to use something slightly less than 100 here since we wish to allow 300 - 3000 Hz.
-
-const int16_t HalfCycleMinTime_mlt=2;
 
 
 
 
 
+static int64_t mainTimeInTicks=0;
 
+static int32_t mainSecondsTimer=0;
 
-// Our current sensor measured top current not RMS or even mean value.
-// If we drive a resistive load the top current is aproximately the same
-// regardless of the actuall current so don't expect to much from it.
+static int32_t mainLoopCounter=0; // This increments about once per 10 uS
 
-//const int16_t deadTime_us=1;  // Time between turning one MOSFET off and turning the other on. Unit is micro seconds.
-
-
-int64_t mainTimeInTicks=0;
-
-int32_t mainSecondsTimer=0;
-
-// We do about 100000 turns per second on this. So for shorter time measurements use this instead of mainTimeInTicks
-
-int32_t mainLoopCounter=0; // This increments about once per 10 uS
-//char mainState=idleState;
-//int16_t mainStateEnteredTicks=0;   // Keeps the ticks that we had when currect state was entered, can be used to calculate how int32_t state has been (given in ticks).
-//int16_t mainLoopCounterInState=0; // Counts the number of turns since state was entered. See also mainLoopCounter.
-
-
-
-//char debugString[120]={0};
-//char *debugPtr=NULL;
-
-char tickState=0;
-
-
-// Variables and constants used for current measuring
-
-const int16_t TimeToDetectCurrent=2048;
+static char tickState=0;
 
 
 
@@ -126,12 +84,6 @@ void logLine(char* str)
 
 #define mainLog(str) {serialPrint(DEV_LPUART1, str); serialPrint(DEV_USART1, str); serialPrint(DEV_USART2, str); systemSleepMs(100);}
 
-// This was a test, remove later if OK
-volatile int64_t one = 1;
-static int64_t test(int64_t a)
-{
-	return a+one;
-}
 
 
 /*#ifdef __cplusplus
@@ -155,6 +107,7 @@ int main_loop(void)
 	}
 
 	// Currently debug logging output.
+	// Later for connection with volt sensor.
 	#if (defined USART2_BAUDRATE)
 	if (serialInit(DEV_USART2, USART2_BAUDRATE)!=0)
 	{
@@ -166,17 +119,30 @@ int main_loop(void)
 	}
 	#endif
 
-	// For connection with volt sensor.
         #ifdef LPUART1_BAUDRATE
+	// For connection with volt sensor.
 	if (serialInit(DEV_LPUART1, LPUART1_BAUDRATE)!=0)
 	{
 		systemErrorHandler(SYSTEM_LPUART_ERROR);
 	}
 	else
 	{
-		serialPrint(DEV_LPUART1, "LPUART1\n");
+		serialPrint(DEV_USART2, "LPUART1\n");
 	}
         #endif
+
+	#ifdef SOFTUART1_BAUDRATE
+	// For connection with volt sensor.
+	if (serialInit(DEV_SOFTUART1, SOFTUART1_BAUDRATE)!=0)
+	{
+		systemErrorHandler(SYSTEM_SOFT_UART_ERROR);
+	}
+	else
+	{
+		serialPrint(DEV_SOFTUART1, "SOFTUART1\n");
+	}
+	#endif
+
 
 
 	systemSleepMs(100);
@@ -204,11 +170,6 @@ int main_loop(void)
 #endif
 
 
-#ifdef DONT_SCAN
-	mainLog(LOG_PREFIX "DONT_SCAN" LOG_SUFIX);
-#endif
-
-
 	wdt_reset();
 
 #if (defined __linux__)
@@ -224,47 +185,36 @@ int main_loop(void)
 	mainLog(LOG_PREFIX "init machine state" LOG_SUFIX);
 	machineStateInit();
 
-
-	//pwm_init();
-
-	// Pin used for contactor/relay
-	relayInit();
-
-	// Comp is used to detect input power loss.
-	comp_init();
-
 	// Initialize Analog to Digital Converter
+	#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL) || (CURRENT_ADC_CHANNEL)
+	//mainLog(LOG_PREFIX "init adc" LOG_SUFIX);
 	adc1Init();
-
-
-	measuring_init();
-
-	//for(int i=0; i<10;i++) {
-	//	systemSleepMs(1000);
-	//	mainLog(LOG_PREFIX "eternal loop" LOG_SUFIX);
-	//}
-
-	portsPwmInit();
-
-	#if (defined PWM_PORT)
-	pwm_init();
 	#endif
 
+	systemSleepMs(100);
 
 	wdt_reset();
 
-	externalSensorInit();
+	#if (defined SCPI_ON_USART2 || defined SCPI_ON_LPUART1 || defined SCPI_ON_SOFTUART1)
+	mainLog(LOG_PREFIX "init SCPI" LOG_SUFIX);
+	scpiInit();
+	#endif
 
-
-	// Initializing fan and temp supervision.
-	mainLog(LOG_PREFIX "Initializing fan and temp" LOG_SUFIX);
+	#if (defined USE_LPTMR2_FOR_FAN2) || (defined FAN1_APIN) || (defined INTERLOCKING_LOOP_PIN)
+	// Initializing fan and interlocking supervision.
+	mainLog(LOG_PREFIX "Initializing fan" LOG_SUFIX);
 	fanInit();
+	#endif
+
+	#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL) || (defined USE_LPTMR1_FOR_TEMP1)
+	// Initializing temp supervision.
+	mainLog(LOG_PREFIX "Initializing temp" LOG_SUFIX);
 	tempInit();
+	#endif
 
-
-	mainLog(LOG_PREFIX "Initialize resonance scanner" LOG_SUFIX);
-	scan_init();
-
+	#ifdef CURRENT_ADC_CHANNEL
+	currentInit();
+	#endif
 
 	mainLog(LOG_PREFIX "Start command interpreter" LOG_SUFIX);
 	cmdInit();
@@ -279,15 +229,6 @@ int main_loop(void)
 	secAndLogInitStatusMessageAddHeader(&messageDbfTmpBuffer, REBOOT_STATUS_MSG);
 	messageSendDbf(&messageDbfTmpBuffer);
 
-	// This was a test, remove later if OK
-	const int64_t a = 1234567891234567LL;
-	const int64_t b = 1234567891234568LL;
-	if (test(a) !=b)
-	{
-		mainLog(LOG_PREFIX "int64_t failed" LOG_SUFIX);
-		return 0;
-	}
-
 	mainLog(LOG_PREFIX "Enter main loop" LOG_SUFIX);
 
 	// Initialize the timer used to know when to do medium tick.
@@ -297,11 +238,6 @@ int main_loop(void)
 	// main loop
 	for(;;)
 	{
-		measuring_process_fast_tick();
-
-		// TODO This shall not be needed if we can get it done with interrupt
-		//comp_mainTick();
-
 		// command interpreter needs to be polled quite often so it does not miss input from serial ports.
 		cmdFastTick();
 
@@ -343,7 +279,9 @@ int main_loop(void)
 		}
 		case 3:
 		{
-			//portsMainTick();
+			#ifdef CURRENT_ADC_CHANNEL
+			currentMediumTick();
+			#endif
 			tickState++;
 			break;
 		}
@@ -361,31 +299,24 @@ int main_loop(void)
 		}
 		case 6:
 		{
-			scanMediumTick();
 			tickState++;
 			break;
 		}
 		case 7:
 		{
-			compMediumTick();
 			tickState++;
 			break;
 		}
 		case 8:
 		{
-			superviseCurrentMilliSecondsTick();
 			tickState++;
 			break;
 		}
 		case 9:
 		{
-			externalSensorMediumTick();
-			tickState++;
-			break;
-		}
-		case 10:
-		{
-			logMediumTick();
+			#if (defined SCPI_ON_USART2 || defined SCPI_ON_LPUART1 || defined SCPI_ON_SOFTUART1)
+			scpiMediumTick();
+			#endif
 			tickState++;
 			break;
 		}

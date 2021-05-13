@@ -91,9 +91,137 @@ void messageReplyToGetCommand(int32_t parameterId, int64_t value, int64_t replyT
 }
 
 
-#if (defined __linux__) || (defined __WIN32)
+#if defined __linux__ || defined __WIN32
 
-void DbfLogBuffer(const char *prefix, const unsigned char *bufPtr, int bufLen)
+void decodeDbfToText(const unsigned char *msgPtr, int msgLen, char *bufPtr, int bufSize)
+{
+	if ((bufPtr == NULL) || (bufSize<=0) || (bufSize >= 0x70000000))
+	{
+		return;
+	}
+
+	DbfUnserializer dbfUnserializer;
+	DbfUnserializerInit(&dbfUnserializer, msgPtr, msgLen);
+
+	if (DbfUnserializerReadIsNextEnd(&dbfUnserializer))
+	{
+		snprintf(bufPtr, bufSize, "empty dbf");
+	}
+	else if (DbfUnserializerReadIsNextString(&dbfUnserializer))
+	{
+		snprintf(bufPtr, bufSize, "unknown dbf");
+	}
+	else if (DbfUnserializerReadIsNextInt(&dbfUnserializer))
+	{
+		int messageCategory = DbfUnserializerReadInt64(&dbfUnserializer);
+
+		switch(messageCategory)
+		{
+			case LOG_CATEGORY:
+			{
+				char tmpStr[4096];
+				log_message_to_string(&dbfUnserializer, tmpStr, sizeof(tmpStr));
+				snprintf(bufPtr, bufSize, "log, %s", tmpStr);
+			}	break;
+			case STATUS_CATEGORY:
+			{
+				char tmpStr[4096];
+				logStatusMessageToString(&dbfUnserializer, tmpStr, sizeof(tmpStr));
+				snprintf(bufPtr, bufSize, "status, %s", tmpStr);
+				break;
+			}
+			case COMMAND_CATEGORY:
+			{
+				char tmpStr[4096];
+				logCommandMessageToString(&dbfUnserializer, tmpStr, sizeof(tmpStr));
+				snprintf(bufPtr, bufSize, "command, %s", tmpStr);
+				break;
+			}
+			default:
+			{
+				const char* messageCategoryName = getMessageCategoryName(messageCategory);
+				if (messageCategoryName!=NULL)
+				{
+					snprintf(bufPtr, bufSize,"%s", messageCategoryName);
+				}
+				else
+				{
+					snprintf(bufPtr, bufSize,"msgCategory%d", messageCategory);
+				}
+				break;
+			}
+		}
+	}
+	else
+	{
+		snprintf(bufPtr, bufSize,LOG_PREFIX "unsupported dbf" LOG_SUFIX);
+	}
+
+	if (!DbfUnserializerReadIsNextEnd(&dbfUnserializer))
+	{
+		int n = strlen(bufPtr);
+		if(n<bufSize)
+		{
+			char tmpStr[4096];
+			DbfUnserializerReadAllToString(&dbfUnserializer, tmpStr, sizeof(tmpStr));
+			snprintf(bufPtr+n, bufSize-n, ", '%s'", tmpStr);
+		}
+	}
+}
+
+
+// This shall only log the message to console. Not process it.
+void decodeMessageToText(const DbfReceiver *dbfReceiver, char *buf, int bufSize)
+{
+	if (DbfReceiverIsTxt(dbfReceiver))
+	{
+		//DbfReceiverLogRawData(dbfReceiver);
+		snprintf(buf, bufSize, "txt: '%s'", dbfReceiver->buffer);
+	}
+	else if (DbfReceiverIsDbf(dbfReceiver))
+	{
+		decodeDbfToText(dbfReceiver->buffer, dbfReceiver->msgSize, buf, bufSize);
+	}
+	else
+	{
+		printf("unknown message");
+	}
+
+}
+
+// This shall only log the message to console. Not process it.
+void linux_sim_log_message_from_target(const DbfReceiver *dbfReceiver)
+{
+	// Logging data in hex.
+	printf(LOG_PREFIX "hex: ");
+	for(int i=0;i<dbfReceiver->msgSize;i++)
+	{
+		printf(" %02x", (unsigned char)dbfReceiver->buffer[i]);
+	}
+	printf(LOG_SUFIX);
+
+	// Log as raw text.
+	if (DbfReceiverIsDbf(dbfReceiver))
+	{
+		char str[4096];
+		DbfUnserializer dbfUnserializer;
+		DbfUnserializerInit(&dbfUnserializer, dbfReceiver->buffer, dbfReceiver->msgSize);
+		DbfUnserializerReadAllToString(&dbfUnserializer, str, sizeof(str));
+		printf(LOG_PREFIX "raw: %s" LOG_SUFIX,str);
+	}
+
+	// Log in clear text as much as known
+	char buf[4096];
+	//DbfLogBuffer("", dbfReceiver->buffer, dbfReceiver->msgSize);
+	decodeMessageToText(dbfReceiver, buf, sizeof(buf));
+	printf(LOG_PREFIX "msg: %s" LOG_SUFIX, buf);
+}
+#endif
+
+
+#if defined __linux__ || defined __WIN32
+
+void messageLogBuffer(const char *prefix, const unsigned char *bufPtr, int bufLen)
 {
 	char str[4096];
 	DbfUnserializer dbfUnserializer;

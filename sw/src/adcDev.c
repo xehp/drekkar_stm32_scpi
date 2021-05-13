@@ -20,14 +20,14 @@ References
 #include "stm32l4xx_ll_adc.h"
 #include "systemInit.h"
 #include "timerDev.h"
-#include "adcDev.h"
 #include "serialDev.h"
-#include "mathi.h"
+#include "machineState.h"
+#include "adcDev.h"
 
 
-#ifndef ASSERT
-#define ASSERT(c) {if (!c) {systemErrorHandler(SYSTEM_APPLICATION_ASSERT_ERROR);}}
-#endif
+#if (defined TEMP1_ADC_CHANNEL) || (defined TEMP2_ADC_CHANNEL) || (CURRENT_ADC_CHANNEL)
+
+
 
 // TODO supposedly there is a better way: http://www.cplusplus.com/faq/sequences/arrays/sizeof-array/#cpp
 #ifndef SIZEOF_ARRAY
@@ -35,33 +35,28 @@ References
 #endif
 
 
-#if (defined ADC_DIFFERENTIAL)
-#if ((ADC_CHANNEL >= 16) || (ADC_CHANNEL <= 0))
-#error // Differential input can't be used with all channels).
-#endif 
-#endif 
 
 
-// More important signals can be listed more than once here.
+// More important (urgent) signals can be listed more than once here.
 const uint32_t adcChannelSequence[] = {
-#ifdef MEASURE_COMP_AND_REF
-		0, 6,
-#endif
-#ifdef INPUT_DC_VOLTAGE_CHANNEL
-	INPUT_DC_VOLTAGE_CHANNEL,
-#endif
-#ifdef INTERNAL_DC_VOLTAGE_CHANNEL
-	INTERNAL_DC_VOLTAGE_CHANNEL,
-#endif
-#ifdef INV_OUTPUT_AC_CURRENT_CHANNEL
-	INV_OUTPUT_AC_CURRENT_CHANNEL,
-#endif
-#ifdef INTERNAL_DC_CURRENT_CHANNEL
-	INTERNAL_DC_CURRENT_CHANNEL,
-#endif
-#ifdef INV_OUTPUT_AC_CURRENT_CHANNEL
-	INV_OUTPUT_AC_CURRENT_CHANNEL,
-#endif
+		#ifdef CURRENT_ADC_CHANNEL
+		CURRENT_ADC_CHANNEL,
+		#endif
+		#ifdef TEMP1_ADC_CHANNEL
+		TEMP1_ADC_CHANNEL,
+		#endif
+		#ifdef CURRENT_ADC_CHANNEL
+		CURRENT_ADC_CHANNEL,
+		#endif
+		#ifdef TEMP2_ADC_CHANNEL
+		TEMP2_ADC_CHANNEL,
+		#endif
+		#ifdef CURRENT_ADC_CHANNEL
+		CURRENT_ADC_CHANNEL,
+		#endif
+		#ifdef TEMP_INTERNAL_ADC_CHANNEL
+		TEMP_INTERNAL_ADC_CHANNEL,
+		#endif
 };
 
 
@@ -115,6 +110,8 @@ void __attribute__ ((interrupt, used)) ADC1_IRQHandler(void)
 
 void adc1Init()
 {
+	ASSERT(sizeof(adcChannelSequence) > 0)
+
 	// Enable the needed clocks
 	RCC->AHB2ENR |= RCC_AHB2ENR_ADCEN_Msk;
 	//RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN_Msk;
@@ -322,3 +319,5 @@ uint32_t adc1GetSample(uint32_t channel)
 	ASSERT(channel < SIZEOF_ARRAY(adcSamples));
 	return adcSamples[channel];
 }
+
+#endif
