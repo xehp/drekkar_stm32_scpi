@@ -109,7 +109,7 @@ GIT_VERSION := $(shell git describe --abbrev=8 --always --tags)
 CFLAGS += $(INCPATH) -DGIT_VERSION=\"$(GIT_VERSION)\"
 
 
-all: info $(BINARY).hex
+all: info $(BINARY).hex $(BINARY).bin
 
 %.o: %.c $(DEPENDENCIES)
 	$(Q)$(CC) $(ARCH_FLAGS) $(COMMON_FLAGS) $(CFLAGS) -c -o $@ $<
@@ -124,6 +124,8 @@ all: info $(BINARY).hex
 $(BINARY).elf: $(OBJS) $(DEPENDENCIES)
 	$(Q)$(LD) $(ARCH_FLAGS) $(LDFLAGS) $(OBJS) -T $(LDSCRIPT) -o $@
 
+$(BINARY).bin:
+	arm-none-eabi-objcopy -O binary $(BINARY).elf $(BINARY).bin
 
 info:
 	@echo "Objects:  $(OBJS)"
@@ -131,7 +133,7 @@ info:
 	@echo ""
 
 clean:
-	rm $(OBJS) $(BINARY).hex $(BINARY).elf
+	rm $(OBJS) $(BINARY).hex $(BINARY).elf $(BINARY).bin
 
 flash: all
 	$(ST_FLASH) --format ihex write $(BINARY).hex

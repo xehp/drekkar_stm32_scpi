@@ -102,7 +102,7 @@ static void sysTickInit()
   //const uint32_t SubPriority = 0;
 
   /* set reload register */
-  SysTick->LOAD  = (uint32_t)((SysClockFrequencyHz/1000) - 1UL); // May need some callibration.
+  SysTick->LOAD  = (uint32_t)((SysClockFrequencyHz/1000) - 1UL); // May need some calibration.
   SysTick->VAL = 0UL;
 
   /* Enable SysTick IRQ and SysTick Timer */

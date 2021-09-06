@@ -38,9 +38,14 @@ void messageSendDbf(DbfSerializer *bytePacket);
 void messageSendShortDbf(int32_t code);
 
 
-#if defined __linux__ || defined __WIN32
-void decodeDbfToText(const unsigned char *msgPtr, int msgLen, char *buf, int bufSize);
+#if (defined __linux__) || (defined __WIN32) || (defined DEBUG_DECODE_DBF)
+int decodeCommandMessageToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
+int decode_log_message_to_string(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
+int decodeDbfToText(const unsigned char *msgPtr, int msgLen, char *bufPtr, int bufSize);
 void linux_sim_log_message_from_target(const DbfReceiver *dbfReceiver);
+void DbfUnserializerReadCrcAndLog(DbfUnserializer *dbfUnserializer);
+int DbfUnserializerReadAllToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
+int DbfReceiverLogRawData(const DbfReceiver *dbfReceiver);
 #endif
 
 

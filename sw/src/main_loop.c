@@ -36,6 +36,7 @@ Henrik
 #include "fan.h"
 #include "temp.h"
 #include "current.h"
+#include "messageNames.h"
 #include "log.h"
 #include "version.h"
 #include "main_loop.h"
@@ -55,7 +56,7 @@ Henrik
 
 static int64_t mainTimeInTicks=0;
 
-static int32_t mainSecondsTimer=0;
+static int32_t mainSecondsTimer_ms=0;
 
 static int32_t mainLoopCounter=0; // This increments about once per 10 uS
 
@@ -232,8 +233,8 @@ int main_loop(void)
 	mainLog(LOG_PREFIX "Enter main loop" LOG_SUFIX);
 
 	// Initialize the timer used to know when to do medium tick.
-	mainTimeInTicks=systemGetSysTimeMs()+1000;
-	mainSecondsTimer=mainTimeInTicks;
+	mainTimeInTicks=systemGetSysTimeMs();
+	mainSecondsTimer_ms=mainTimeInTicks+1000;
 
 	// main loop
 	for(;;)
@@ -254,6 +255,7 @@ int main_loop(void)
 				// Timer has been incremented,
 				// count ticks and start the tickState sequence,
 				// typically this happens once per milli second.
+				//mainTimeInTicks++;
 				mainTimeInTicks = timerTicks_ms;
 				tickState++;
 			}
@@ -266,13 +268,13 @@ int main_loop(void)
 		}
 		case 2:
 		{
-			const int16_t t = timerTicks_ms-mainSecondsTimer;
+			const int16_t t = timerTicks_ms-mainSecondsTimer_ms;
 			if (t>=0)
 			{
 				// One second has passed since last second tick. Increment seconds timer.
 				secAndLogIncSeconds();
-				mainSecondsTimer += 1000;
-				//logInt1(MAIN_LOOP_TICK);
+				mainSecondsTimer_ms += 1000;
+				logInt2(MAIN_LOOP_TICK_S, secAndLogGetSeconds());
 			}
 			tickState++;
 			break;

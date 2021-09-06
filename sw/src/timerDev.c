@@ -68,6 +68,7 @@ void lptmr1Init()
 	// is enabled (ENABLE bit is set to ‘1’).
 	// The reset value for this one is strangely 1. So it only counts to 1!
 	//LPTIM1->ARR = 10000-1;
+	// Or shall it be LPTIM1->ARR = 0 ?
 	LPTIM1->ARR = 0xFFFF;
 
 	LPTIM1->CR |= LPTIM_CR_CNTSTRT_Msk;

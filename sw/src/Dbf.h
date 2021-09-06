@@ -144,11 +144,8 @@ DbfCodeTypesEnum DbfUnserializerGetNextType(const DbfUnserializer *dbfUnserializ
 
 int DbfUnserializerGetIntRev(const DbfUnserializer *dbfUnserializer, unsigned int e);
 
-void DbfUnserializerReadCrcAndLog(DbfUnserializer *dbfUnserializer);
-
 char DbfUnserializerIsOk(DbfUnserializer *dbfUnserializer);
 
-void DbfUnserializerReadAllToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
 
 #define DBF_RCV_TIMEOUT_MS 5000
 
@@ -200,7 +197,6 @@ void DbfReceiverTick(DbfReceiver *dbfReceiver, unsigned int deltaMs);
 
 // Note, this is not same as DbfUnserializerReadString. This gives the entire message in ascii.
 int DbfReceiverToString(DbfReceiver *dbfReceiver, const char* bufPtr, int bufLen);
-int DbfReceiverLogRawData(const DbfReceiver *dbfReceiver);
 
 
 #endif /* DBF_H_ */

@@ -13,16 +13,14 @@ Henrik
 */
 
 
-
+#include "systemInit.h"
 #include "main_loop.h"
-
-
-
 
 
 
 int main(void)
 {
-  main_loop();
-  return(0);
+	systemSleepMs(100);
+	main_loop();
+	return(0);
 }

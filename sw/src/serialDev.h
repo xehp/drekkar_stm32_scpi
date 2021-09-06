@@ -40,6 +40,6 @@ int serialGetChar(int usartNr);
 void serialWrite(int usartNr, const char *str, int msgLen);
 void serialPrint(int usartNr, const char *str);
 void serialPrintInt64(int usartNr, int64_t num);
-
+int serialGetFreeSpaceWriteBuffer(int usartNr);
 
 #endif

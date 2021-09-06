@@ -209,19 +209,47 @@ static inline void tempSendMainSecondsTick()
 	const int n1 = adc1GetNOfSamples(TEMP1_ADC_CHANNEL);
 	const int n2 = adc1GetNOfSamples(TEMP2_ADC_CHANNEL);
 
-	if ((n1 != prevTemp1Count) && (n2 != prevTemp2Count)) {
-		uint32_t v1 = adc1GetSample(TEMP1_ADC_CHANNEL);
-		uint32_t v2 = adc1GetSample(TEMP2_ADC_CHANNEL);
+	if ((n1 != prevTemp1Count) && (n2 != prevTemp2Count))
+	{
+		const uint32_t v1 = adc1GetSample(TEMP1_ADC_CHANNEL);
+		const uint32_t v2 = adc1GetSample(TEMP2_ADC_CHANNEL);
+		#if 0
+		if ((v1<0x20) && (v2<0x20))
+		{
+			// No temp sensors seems to be connected.
+			debug_print("No temp sensors ");
+			debug_print_hex_16(v1);
+			debug_print(" ");
+			debug_print_hex_16(v2);
+			debug_print("\n");
+			temperature1State = NOT_OK_STATE;
+			temperature2State = NOT_OK_STATE;
+		}
+		else
+		{
+			temp1C = translateAdcToC(v1);
+			temp2C = translateAdcToC(v2);
+			if (temperature1State == OK_STATE)
+			{
+				sendTempMessage(temp1C, temp2C);
+			}
+			else
+			{
+				temperature1State = OK_STATE;
+				temperature2State = OK_STATE;
+			}
+		}
+		#else
 		temp1C = translateAdcToC(v1);
 		temp2C = translateAdcToC(v2);
 		sendTempMessage(temp1C, temp2C);
+		#endif
 		prevTemp1Count = n1;
 		prevTemp2Count = n2;
-		temperature1State = OK_STATE;
-		temperature2State = OK_STATE;
 	}
 	else
 	{
+		debug_print("No temp value\n");
 		temperature1State = NOT_OK_STATE;
 		temperature2State = NOT_OK_STATE;
 	}

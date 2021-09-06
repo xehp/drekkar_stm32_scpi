@@ -86,8 +86,10 @@ int softUart1Init(int baud);
 
 #ifdef SOFTUART1_TX_PIN
 inline static void softUart1PutCh(int ch) {fifoPut(&bufferedSerialSoft1.outBuffer, ch);}
+inline static int softUart1_free_space_out_buffer() {return fifo_free_space(&bufferedSerialSoft1.outBuffer);}
 #else
 inline static void softUart1PutCh(int ch) {;}
+inline static int softUart1_free_space_out_buffer() {return 0;}
 #endif
 
 inline static int softUart1GetCh()

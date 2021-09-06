@@ -819,3 +819,29 @@ void serialPrintInt64(int usartNr, int64_t num)
 	serialPrint(usartNr, str);
 }
 
+int serialGetFreeSpaceWriteBuffer(int usartNr)
+{
+	switch(usartNr)
+	{
+		#ifdef LPUART1_TX_PIN
+		case DEV_LPUART1:
+			fifoPut(&lpuart1Out, ch);
+			return fifo_free_space(&usart1Out);
+		#endif
+		case DEV_USART1:
+			return fifo_free_space(&usart1Out);
+		#ifdef USART2_TX_PIN
+		case DEV_USART2:
+			return fifo_free_space(&usart2Out);
+		#endif
+		#ifdef SOFTUART1_BAUDRATE
+		case DEV_SOFTUART1:
+			return softUart1_free_space_out_buffer();
+			break;
+		#endif
+		default:
+			// Ignore this.
+		break;
+	}
+	return 0;
+}

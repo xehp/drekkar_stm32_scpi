@@ -22,6 +22,14 @@ Adapted for using STM32.
 #define CFG_HDR_H_
 
 
+#ifdef STM32L432xx
+// This is the Cortex M4 Lowpower version L4321
+#elif (defined STM32F103C8Tx)
+#warning Not implemented yet
+#else
+#error Unknown target CPU/MCU
+#endif
+
 
 #define USART1_BAUDRATE 115200
 #define USART2_BAUDRATE 115200
@@ -37,8 +45,9 @@ Adapted for using STM32.
 
 // Usart 2 can also be used for commands.
 // Currently it probably only receives commands on usart2
-// it might not send replies to it (due to missing HW).
-#define COMMAND_ON_USART2
+// it might not send replies to it due to missing HW.
+// It goes to USB instead, on Nucleo L432xx this port is connected to USB.
+//#define COMMAND_ON_USART2
 
 
 // SCPI interface can use USART2 or SOFTUART1
@@ -50,6 +59,17 @@ Adapted for using STM32.
 #define SCPI_ON_SOFTUART1
 
 
+
+#define DEBUG_DEV DEV_USART2
+
+// Enable logging of sent DBF messages in ascii
+// Avoid using both this and COMMAND_ON_USART2 (or whatever depending on DEBUG_DEV).
+#define DEBUG_DECODE_DBF
+
+
+// It may be useful to report all parameter changes.
+// If not needed comment the line below out.
+//#define REPORT_PARAMETER_CHANGES
 
 
 // Port PB_1 (AKA PB1) is a timer input.

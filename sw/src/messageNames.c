@@ -112,12 +112,11 @@ const char* getMessageCommandName(COMMAND_CODES messageTypeCode)
 {
 	switch(messageTypeCode)
 	{
-		#if (defined __linux__) || (defined __WIN32)
+		#if (defined __linux__) || (defined __WIN32) || (defined DEBUG_DECODE_DBF)
 		case UNKNOWN_CMD: return "UNKNOWN_COMMAND";
 		case ECHO_CMD: return "ECHO_CMD";
 		case GET_CMD: return "GET_CMD";
 		case SET_CMD: return "SET_CMD";
-		case SEND_ALL_CONFIG_CMD: return "SEND_ALL_CONFIG";
 		case IGNORE_VOLTAGE_SENSOR_CMD: return "IGNORE_VOLTAGE_SENSOR";
 		case REBOOT_CMD: return "REBOOT_CMD";
 		case SAVE_CMD: return "SAVE_CMD";
@@ -137,13 +136,13 @@ const char *getStatusMessagesName(STATUS_MESSAGES statusCode)
 {
 	switch(statusCode)
 	{
-		#if (defined __linux__) || (defined __WIN32)
+		#if (defined __linux__) || (defined __WIN32) || (defined DEBUG_DECODE_DBF)
 		case UNKNOWN_STATUS_MSG: return "UNKNOWN_STATUS";
 		case REBOOT_STATUS_MSG: return "REBOOT_STATUS";
 		case VOLTAGE_STATUS_MSG: return "VOLTAGE_STATUS";
 		case PARAMETER_STATUS_MSG: return "PARAMETER_STATUS";
 		case TEMP_STATUS_MSG: return "TEMP_STATUS_MSG";
-		case WEB_SERVER_STATUS_MSG: return "WEB_SERVER_STATUS_MSG";
+		//case WEB_SERVER_STATUS_MSG: return "WEB_SERVER_STATUS_MSG";
 		#endif
 		default: break;
 	}
@@ -155,7 +154,8 @@ const char *getLogMessageName(int logMessageType)
 {
 	switch(logMessageType)
 	{
-	#if (defined __linux__) || (defined __WIN32)
+	#if (defined __linux__) || (defined __WIN32) || (defined DEBUG_DECODE_DBF)
+	case MAIN_LOOP_TICK_S: return "TICK_S";
 	case CMD_INIT: return "CMD_INIT";
 	case CMD_INCORRECT_DBF_RECEIVED: return "CMD_INCORRECT_DBF_RECEIVED";
 	case CMD_RESETTING: return "CMD_RESETTING";
@@ -165,7 +165,6 @@ const char *getLogMessageName(int logMessageType)
 	case EEPROM_TRYING_BACKUP: return "EEPROM_TRYING_BACKUP";
 	case EEPROM_BACKUP_LOADED_OK: return "EEPROM_BACKUP_LOADED_OK";
 	case EEPROM_FAILED: return "EEPROM_FAILED";
-	case FAN_AND_TEMP_INIT: return "FAN_AND_TEMP_INIT";
 	case SEC_AND_LOG_INIT: return "SEC_AND_LOG_INIT";
 	case ERROR_REPORT: return "ERROR_REPORT";
 	case ERROR_ASSERT: return "ERROR_ASSERT";

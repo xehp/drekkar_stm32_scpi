@@ -21,6 +21,11 @@
 #endif
 
 #include "cfg.h"
+
+#if (defined __linux__) || (defined __WIN32) || (defined DEBUG_DECODE_DBF)
+#include "miscUtilities.h"
+#endif
+
 #include "crc32.h"
 #include "Dbf.h"
 
@@ -874,18 +879,6 @@ DBF_CRC_RESULT DbfUnserializerReadCrc(DbfUnserializer *dbfUnserializer)
 }
 
 
-#if defined __linux__ || defined __WIN32
-void DbfUnserializerReadCrcAndLog(DbfUnserializer *dbfUnserializer)
-{
-	DBF_CRC_RESULT r = DbfUnserializerReadCrc(dbfUnserializer);
-	switch(r)
-	{
-		case DBF_BAD_CRC: printf("Bad CRC\n");break;
-		case DBF_OK_CRC: printf("OK CRC\n");break;
-		default: printf("No CRC\n");break;
-	}
-}
-#endif
 
 
 static int8_t DbfReceiverIsFull(DbfReceiver * dbfReceiver)
@@ -1127,93 +1120,4 @@ void DbfReceiverTick(DbfReceiver *dbfReceiver, unsigned int deltaMs)
 }
 
 
-#if defined __linux__ || defined __WIN32
-
-/*int DbfReceiverToString(DbfReceiver *dbfReceiver, const char* bufPtr, int bufLen)
-{
-	if (DbfReceiverIsTxt(dbfReceiver))
-	{
-		int n = ((bufLen-1) > dbfReceiver->msgSize) ? dbfReceiver->msgSize : (bufLen-1);
-		memcpy(bufPtr, dbfReceiver->buffer, n);
-		bufPtr[n] = 0;
-	}
-	else if (DbfReceiverIsDbf(dbfReceiver))
-	{
-		// Not implemented yet
-		bufPtr[0] = 0;
-	}
-	return 0;
-}*/
-
-
-// Reads the remaining message and logs its contents.
-void DbfUnserializerReadAllToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize)
-{
-	if ((bufPtr == NULL) || (bufSize<=0) || (bufSize >= 0x70000000))
-	{
-		return;
-	}
-
-	const char* separator="";
-	*bufPtr=0;
-	while(!DbfUnserializerReadIsNextEnd(dbfUnserializer) && bufSize>0)
-	{
-		if (DbfUnserializerReadIsNextString(dbfUnserializer))
-		{
-			char tmp[80];
-			DbfUnserializerReadString(dbfUnserializer, tmp, sizeof(tmp));
-			snprintf(bufPtr, bufSize, "%s\"%s\"", separator, tmp);
-		}
-		else if (DbfUnserializerReadIsNextInt(dbfUnserializer))
-		{
-			int64_t i = DbfUnserializerReadInt64(dbfUnserializer);
-			snprintf(bufPtr, bufSize, "%s%lld", separator, (long long int)i);
-		}
-		else
-		{
-			snprintf(bufPtr, bufSize, " ?");
-		}
-		const int n = strlen(bufPtr);
-		bufPtr += n;
-		bufSize -=n;
-		separator=" ";
-	}
-}
-
-
-int DbfReceiverLogRawData(const DbfReceiver *dbfReceiver)
-{
-	if (DbfReceiverIsTxt(dbfReceiver))
-	{
-		printf(LOG_PREFIX "DbfReceiverLogRawData: ");
-		const unsigned char *ptr = dbfReceiver->buffer;
-		int n = dbfReceiver->msgSize;
-		for(int i=0; i<n; ++i)
-		{
-			int ch = ptr[i];
-			if (isgraph(ch))
-			{
-				printf("%c", ch);
-			}
-			else if (isprint(ch))
-			{
-				printf("%c", ch);
-			}
-			else if (ch == 0)
-			{
-				// do nothing
-			}
-			else
-			{
-				printf("<%02x>", ch);
-			}
-		}
-	}
-	else if (DbfReceiverIsDbf(dbfReceiver))
-	{
-		messageLogBuffer("", dbfReceiver->buffer, dbfReceiver->msgSize);
-	}
-	return 0;
-}
-#endif
 

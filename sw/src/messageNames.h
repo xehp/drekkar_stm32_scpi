@@ -20,6 +20,7 @@ Created 2018 by Henrik
 // Preferably unique numbers across the system so check also other SW what they use.
 typedef enum
 {
+	MAIN_LOOP_TICK_S = 6,
 	CMD_INIT = 16,
 	CMD_INCORRECT_DBF_RECEIVED = 17,
 	CMD_RESETTING = 18,

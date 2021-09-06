@@ -98,7 +98,7 @@ void systemErrorHandler(int errorCode);
 
 
 
-#define SYSTEM_ASSERT(c) {if (!c) {systemErrorHandler(SYSTEM_ASSERT_ERROR);}}
+#define SYSTEM_ASSERT(c) {if (!(c)) {systemErrorHandler(SYSTEM_ASSERT_ERROR);}}
 
 
 #ifdef __AVR_ATmega328P__

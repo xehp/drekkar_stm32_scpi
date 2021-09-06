@@ -7,27 +7,13 @@ A compiler will be needed. Its possible that all you need to do is to install gc
 
 
 
-However prior to this program I experimented with MBED and Zephyr and during that process I installed many more tools.
-So if something is still missing then one of these might be needed also:
-  sudo apt install git cmake cutecom eclipse-cdt eclipse-jdt eclipse-egit screen gperf ninja-build 
-  sudo apt install vscode python2
-    Install python2. NOT PYTHON3 
-  Perhaps install also mercurial:
-    sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
-    sudo apt-get update
-    sudo apt install gcc-arm-embedded python-pip python-setuptools mercurial
-  This was installed earlier when using MBED but its installed so it might be needed for this also (who knows).
-    Install pip for python2. Sometimes called pip2. (On arch python2-pip)
-    Install pip2 install mdev-cli
-    Symlink python2 and pip2 to pip and python in ~/.bin
-  These may have another name on Ubuntu/Debian, anyway on Arch it was like this:
-    sudo pacman -S arm-none-eabi-newlib arm-none-eabi-gcc arm-none-eabi-binutils 
-  This contradicts the warning to avoid python3 above. Try and see what works.
-    sudo apt install python3-pip
-    pip3 install --user pyelftools
-  Install DTC, If dtc is not found its probably called device-tree-compiler instead.
-    sudo pacman -S dtc
-    sudo apt install device-tree-compiler
+
+If using Nucleo the device will show up as an USB flash drive when connected.
+Just copy and paste the binary.bin file over. 
+
+If all goes well it shall appear and then disapear after about 5 seconds.
+Just reboot the device after that.
+
 
 
 st-link used to copy code to target via CLI (in long run much faster than mouse clicking).

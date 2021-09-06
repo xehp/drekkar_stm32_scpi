@@ -34,14 +34,14 @@ void logInitAndAddHeader(DbfSerializer *dbfSerializer, AVR_CFG_LOG_MESSAGES msg)
 int logIfParameterChanged(PARAMETER_CODES par, int64_t value);
 void logResetTime();
 
-#if defined __linux__ || defined __WIN32
+#if (defined __linux__) || (defined __WIN32) || (defined DEBUG_DECODE_DBF)
 void logScanningAndRunningStateToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
 void logOldFormatsFreqCurrVoltToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
-void logStatusMessageToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
-void log_message_to_string(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
+//void logStatusMessageToString(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
 void log_reply_message_to_string(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
 //void log_voltage_message_to_string(DbfUnserializer *dbfUnserializer, char *bufPtr, int bufSize);
 void logDbfAsHexAndText(const unsigned char *msgPtr, int msgLen);
+//void decodeDbfToText(const unsigned char *msgPtr, int msgLen, char *bufPtr, int bufSize);
 #endif
 
 #endif

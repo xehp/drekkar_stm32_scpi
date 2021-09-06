@@ -72,12 +72,11 @@ static void forwardMessage(int usartDev, const DbfReceiver* dbfReceiver)
 
 
 
-
+#ifdef REPORT_PARAMETER_CHANGES
 static int64_t logParameterCounter = 0;
-
 static const int64_t minTimeBeteenParameterLogging_ms = 50;
 static int64_t LastParameterLogTime = 0;
-
+#endif
 
 
 /**
@@ -311,10 +310,10 @@ void cmdMediumTick(void)
 	DbfReceiverTick(&cmdLine2, 1);
 	#endif
 
-	// TODO Perhaps Move this to log.c?
+	#ifdef REPORT_PARAMETER_CHANGES
 	const int64_t t = systemGetSysTimeMs();
 	const int64_t timeSinceLastParameterLog = t - LastParameterLogTime;
-	if (timeSinceLastParameterLog> minTimeBeteenParameterLogging_ms)
+	if (timeSinceLastParameterLog > minTimeBeteenParameterLogging_ms)
 	{
 		NOK_REASON_CODES readBackResult = REASON_OK;
 		const int64_t v = getParameterValue(logParameterCounter, &readBackResult);
@@ -331,6 +330,7 @@ void cmdMediumTick(void)
 			logParameterCounter = 0;
 		}
 	}
+	#endif
 }
 
 
