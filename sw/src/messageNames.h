@@ -112,6 +112,10 @@ typedef enum
 	MICRO_AMPS_PER_UNIT_AC = 61,        // ee.microAmpsPerUnit
 	SYS_TIME_MS = 74,
 	MEASURED_LEAK_AC_CURRENT_MA = 106,
+	par_version_major = 110,
+	par_version_minor = 111,
+	par_version_debug = 112,
+	par_magicNumber = 113,
 	// Remember to update LOGGING_MAX_NOF_PARAMETERS if a parameter is added here.
 } PARAMETER_CODES;
 

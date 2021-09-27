@@ -166,61 +166,32 @@ int64_t getParameterValue(PARAMETER_CODES parId, NOK_REASON_CODES *result)
 {
 	switch(parId)
 	{
-		case DEVICE_ID:
-		{
-			return ee.deviceId;
-		}
-		case TARGET_TIME_S:
-		{
-			return secAndLogGetSeconds();
-		}
+		case par_version_major: return VERSION_MAJOR;
+		case par_version_minor: return VERSION_MINOR;
+		case par_version_debug: return VERSION_DEBUG;
+		case par_magicNumber: return ee.magicNumber;
+		case DEVICE_ID: return ee.deviceId;
+		case TARGET_TIME_S: return secAndLogGetSeconds();
 		#if (defined SCPI_ON_USART2 || defined SCPI_ON_LPUART1 || defined SCPI_ON_SOFTUART1)
-		case REPORTED_EXT_AC_VOLTAGE_MV:
-		{
-			return scpiGetMeasuredExternalAcVoltage_mV();
-		}
+		case REPORTED_EXT_AC_VOLTAGE_MV: return scpiGetMeasuredExternalAcVoltage_mV();
 		#endif
 		#if (defined TEMP1_ADC_CHANNEL) || (defined USE_LPTMR1_FOR_TEMP1)
-		case TEMP1_C:
-		{
-			return tempGetTemp1Measurement_C();
-		}
+		case TEMP1_C: return tempGetTemp1Measurement_C();
 		#endif
 		#ifdef TEMP2_ADC_CHANNEL
-		case TEMP2_C:
-		{
-			return tempGetTemp2Measurement_C();
-		}
+		case TEMP2_C: return tempGetTemp2Measurement_C();
 		#endif
 		#ifdef USE_LPTMR2_FOR_FAN2
-		case FAN2_HZ:
-		{
-			return fanGetFan2Measurement_Hz();
-		}
+		case FAN2_HZ: return fanGetFan2Measurement_Hz();
 		#endif
 		#ifdef FAN1_APIN
-		case FAN1_HZ:
-		{
-			return fanGetFan1Measurement_Hz();
-		}
+		case FAN1_HZ: return fanGetFan1Measurement_Hz();
 		#endif
-		case REPORTED_ERROR:
-		{
-			return errorGetReportedError();
-		}
-		case MICRO_AMPS_PER_UNIT_AC:
-		{
-			return ee.microAmpsPerUnitAc;
-		}
-		case SYS_TIME_MS:
-		{
-			return systemGetSysTimeMs();
-		}
+		case REPORTED_ERROR: return errorGetReportedError();
+		case MICRO_AMPS_PER_UNIT_AC: return ee.microAmpsPerUnitAc;
+		case SYS_TIME_MS: return systemGetSysTimeMs();
 		#ifdef CURRENT_ADC_CHANNEL
-		case MEASURED_LEAK_AC_CURRENT_MA:
-		{
-			return currentGetAcCurrent_mA();
-		}
+		case MEASURED_LEAK_AC_CURRENT_MA: return currentGetAcCurrent_mA();
 		#endif
 		default:
 			if (result!=NULL)

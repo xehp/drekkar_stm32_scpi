@@ -6,13 +6,14 @@
 */
 
 
-#define VER_XSTR(s) VER_STR(s)
-#define VER_STR(s) #s
-
-
+// Enter name and version numbers here:
+#define VERSION_NAME "EIT Dielectric test system SCPI"
 #define VERSION_MAJOR 5
 #define VERSION_MINOR 3
 #define VERSION_DEBUG 1
 
+// Don't edit these (only used internally in version.h):
+#define VER_XSTR(s) VER_STR(s)
+#define VER_STR(s) #s
 
-#define VERSION_STRING "EIT Dielectric test system SCPI " VER_XSTR(VERSION_MAJOR) "." VER_XSTR(VERSION_MINOR) "." VER_XSTR(VERSION_DEBUG)
+#define VERSION_STRING VERSION_NAME " " VER_XSTR(VERSION_MAJOR) "." VER_XSTR(VERSION_MINOR) "." VER_XSTR(VERSION_DEBUG)

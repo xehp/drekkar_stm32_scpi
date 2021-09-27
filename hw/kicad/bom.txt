@@ -1,0 +1,256 @@
+
+
+The plan was to use this to interface our STM32 via optical link with this SCPI compatible multimeter:
+BK5491B -  Digital Bänkmultimeter, 50 000 räkningar, Sann RMS, Manuell skala, 1 kV, 20 A, 4,75-siffrig 
+	https://www.bkprecision.com/products/multimeters/5491B-50000-count-true-rms-bench-digital-multimeter.html
+	farnell:1852748
+	digikey:BK5491B-ND
+	elfa:301-15-324
+
+	9pin DSUB
+	This unit is designed to be connected to BK precision multimeters.
+	These units don't seem to drive RTC and CTS so we need to steal power from the data signal.
+	See chapter 5.2.1    RS-232 Connection in http://bkpmedia.s3.amazonaws.com/downloads/manuals/en-us/5492B_manual.pdf
+	The multimeter will use these pins:
+	Transmitted Data	TXD	3
+	Received Data		RXD	2
+	Signal Ground Common	GND	5
+
+
+	Null modem cable
+		digikey:TL378-ND
+
+
+
+U1
+	IC TRANSCEIVER FULL 2/2 16DIP
+	digikey:ICL3232CPZ-ND
+	
+	socket
+		digikey:ED3017-ND‎
+
+
+U2
+	NUCLEO-L432KC‎
+	digikey:497-16592-ND‎
+	elfa:301-76-568
+
+	socket
+		Use these and break of 2*15 positions.
+		CONN RCPT 32POS 0.1 GOLD PCB 
+		Samtec Inc. SSA-132-S-G‎  
+		digikey:SAM1121-32-ND‎
+
+
+D1
+	Diode >=500 mA
+
+	For Diodes: Typically the ring marked end to the square pad. 
+D4
+	Zenerdiod TVS 5.1 Volt
+
+D8 
+	Zenerdiod TVS 6.8 Volt
+		digikey:497-14736-1-ND‎
+
+TX1
+	Transmitter
+			BROADCOM LIMITED  SP000063858  SFH 757V - 100MBD TRANSMITTER 
+			mouser: 630-SP000063858
+			farnell:1863195
+		Or
+			digikey:516-2213-ND			
+			
+		2021-08-24
+			It should work with this also (not tested with this one yet):
+				‎SP000063858‎ 
+				digikey:516-2872-ND‎
+			
+
+RX1, RX2
+	Receiver
+			Fiberoptiska sändare, mottagare och transceivrar SFH 551/1-1V 
+			mouser:630-SP000063855
+		or:
+			BROADCOM LIMITED  SFH 551/1-1V  RECEIVER, 5MBPS,
+			farnell:1335305
+		or:
+			SFH551/1-1V
+			digikey:516-2455-ND
+
+			NOTE:
+				Minimum Supply Voltage for Function V CC min 4 Volts  (3.3 Volts it too little)
+				The SFH551/1-1 receiver is a transimpedance amplifier
+				with a TTL open-collector output stage, therefore a
+				pull-up resistor of at least 330 Ω is necessary for full speed.
+
+
+C1, C2, C4, C5, C6, C7, C8, C11
+	Capacitors 0.1 uF to 1 uF.
+	digikey:BC1084CT-ND‎
+
+C9, C10
+	1 uF
+	digikey:445-173257-1-ND‎
+	
+C3
+	Optional
+	Capacitor 10 nF
+
+
+R1
+	Resistor only needed if measuring current also.
+
+	At 40 Amp AC RMS the voltage over R3 shall be less than 2.5V peek.
+	So about 1.5 RMS
+	The current transformer is 1:3000
+	So max R3 is R = U/I = 1.5 / (40/3000) = 100 Ohm
+	Will use about 47 Ohm, need 1% or better.
+	digikey:BC4537CT-ND
+	
+R5
+	10 Ohm
+
+
+R2
+	Recomended for full speed is 330 Ohm.
+	But we use only upp to 115000 baud so 1 kOhm 5% will be fine.
+
+R3
+	Resistor, Max allowed If on Transmitter is 50 mA and forward voltage is typical 2 V. 
+	So if signal is 5 V then R shall be R=U/I = 3/0.05 Ohm = 60 Ohm minimum
+	So 100 Ohm here should be fine.
+
+
+R4
+	100 Ohm
+
+
+J4
+	Connect pin 2 and 1
+	(pin one is the one with square pad)
+
+J5
+	Connect pin 2 and 1
+
+
+R8, R9
+	1 kOhm preferably 1%
+	digikey:BC4518CT-ND‎
+
+J8, J9
+	Molex 3 Way
+	But we use:
+	Molex 2 Way on pins 2 and 3 (do not need pin 1 GND, that is the one with square pad)
+
+J2
+	DSUB 9 pos MALE ANGLED PCB CONNECTO
+	digikey:732-618009231221-ND
+
+
+
+D2, D6, D12
+	LED red with (builtin resistor for 5 Volts)
+		digikey:67-1068-ND‎
+
+	For LEDs: Typically the shorter leg to square pad.
+
+
+Not on schematic
+	Box
+	Hammond Manufacturing 1591ATRD 
+		digikey:HM986-ND‎
+		elfa:150-23-601
+
+	Optic fibre
+		BROADCOM LIMITED  HFBR-RLS010Z  Fiberoptisk kabel, Versatile Link, 1mm, 1 Fibrer, Svart, PE, 2.2 mm, 32.8 ft
+		farnell:1247701 
+
+	CRIMP HOUSING
+
+
+
+
+	High voltage probe
+		placing 5 - 10 of 10 MOhm resistors in series into a tube.
+		The low voltage resistor (100 kOhm) is mounted as close to volt meter as possible.
+		Some connectors and lab cables needed also.
+
+		Resistors:
+			5 or 10 of these (for 20 resp 40 kVolt)
+				RES 10M OHM 10W 1% AXIAL
+				digikey:ROX30010M0FKEM
+			and 1 or 2 of these
+				RES 100K OHM 2W 1% AXIAL
+				RNS2FAD100K
+				digikey:RNS2FAD100KCT-ND
+				
+		For 36 kV version use 10x10MOhm with 2*100kOhm.
+		For 18 kV version use 5x10MOhm with 100kOhm.
+		
+		
+		Some lab cables:
+			digikey:501-1423-ND‎
+
+		CONN BANANA JACK SLDR TABS BLACK
+			digikey:J152-ND‎
+
+		CONN BANANA PLUG MINI SLDR BLACK 
+			digikey:501-1513-ND‎
+
+		CONN BANANA PLUG MINI SLDR RED 
+			digikey:501-1499-ND‎
+
+		Speaker Stand
+			https://www.thomann.de/se/fun_generation_speaker_stand_pair.htm?sid=20037238552aaf1d290015468b2c56ca
+
+		Adapter for mounting probe on speaker stand.
+			/home/henrik/git/CableAgeing2/openscad/probe_speaker_stand_adapter.scadprobe_speaker_stand_adapter.scad
+
+	Or would this work:
+		digikey:MOX-H-025005FE-ND
+
+
+
+Addons
+	2 x 10 kOhms NTC Thermistor.
+	The sensors are mounted on the coils low voltage end. One for each "half".
+		EPCOS (TDK) / B57703M0103A017
+		mouser:871-B57703M0103A017
+		digikey:495-75199-ND‎
+
+	Molex 2 pin housing.
+
+
+	TODO
+		Would be good to have a third sensor for ambient temperature. 
+		That way we could stop machine if coils do not warm up as expected.
+
+
+
+Read more about SCPI (pronounced "skippy") for Standard Commands for Programmable Instruments:
+	http://www.yoctopuce.com/EN/article/yocto-rs232-scpi-and-lab-instruments
+	http://www.yoctopuce.com/EN/products/category/usb-electrical-sensors
+
+
+Read more about RS232
+	https://www.lammertbies.nl/comm/cable/rs-232
+
+
+Alternatives if something above goes end of life.
+	Rigol DS1052E Oscilloscope
+	https://www.eevblog.com/forum/testgear/free-ds1052eds1102e-software-for-linux/msg685707/#msg685707
+	https://github.com/wd5gnr/qrigol
+
+	Hantek 6022be
+	http://openhantek.org/
+
+	If 1488 is to be used perhaps this one:
+		digikey:296-1754-5-ND
+
+	If 1489 is to be used perhaps this one:
+		digikey:DS14C89AN/NOPB-ND
+
+See also
+	https://github.com/xehp/drekkar_stm32_scpi
+	
